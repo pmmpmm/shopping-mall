@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "@/components/ui/Logo";
 
 const UtilityMenuBar = () => {
@@ -6,8 +6,9 @@ const UtilityMenuBar = () => {
 };
 
 const Header = () => {
+  const navigate = useNavigate();
   return (
-    <header className="flex justify-between items-start py-4">
+    <header className="flex justify-between items-center py-3.5">
       <Link to="/" className="py-2">
         <Logo className="w-48" />
       </Link>
@@ -15,8 +16,7 @@ const Header = () => {
       <div className="flex items-center text-[13px]">
         <button>로그인</button>
         <UtilityMenuBar />
-
-        <span>반갑습니다. 홍길동 님</span>
+        <button onClick={() => navigate("/signup")}>회원가입</button>
         <UtilityMenuBar />
 
         <Link to="/cart">
@@ -27,7 +27,7 @@ const Header = () => {
         </Link>
         <UtilityMenuBar />
 
-        <Link to="/products/new">상품 등록</Link>
+        <Link to="/products/new">상품 관리</Link>
         <UtilityMenuBar />
 
         <button>로그아웃</button>
