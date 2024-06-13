@@ -1,8 +1,11 @@
+import LayoutA from "@/components/layouts/LayoutA";
+import ProductsContent from "@/components/features/ProductsContent";
+
 const Products = () => {
   return (
-    <div>
-      <p>Products</p>
-    </div>
+    <LayoutA>
+      <ProductsContent />
+    </LayoutA>
   );
 };
 

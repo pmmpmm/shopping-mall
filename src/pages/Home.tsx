@@ -1,8 +1,11 @@
+import LayoutA from "@/components/layouts/LayoutA";
+import HomeContent from "@/components/features/HomeContent";
+
 const Home = () => {
   return (
-    <div>
-      <p>Home</p>
-    </div>
+    <LayoutA>
+      <HomeContent />
+    </LayoutA>
   );
 };
 
