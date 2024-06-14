@@ -1,20 +1,15 @@
 import WrapperLayoutA from "@/components/layouts/WrapperLayoutA";
 import Header from "@/components/features/Header";
-import CategoryNav from "@/components/features/CategoryNav";
 
-interface LayoutAProps {
+interface LayoutBProps {
   children: React.ReactNode;
 }
 
-const LayoutA = ({ children }: LayoutAProps) => {
+const LayoutB = ({ children }: LayoutBProps) => {
   return (
     <>
-      <WrapperLayoutA>
-        <Header />
-      </WrapperLayoutA>
-
       <WrapperLayoutA className="border-b border-solid border-gray-200">
-        <CategoryNav />
+        <Header />
       </WrapperLayoutA>
 
       <WrapperLayoutA>{children}</WrapperLayoutA>
@@ -22,4 +17,4 @@ const LayoutA = ({ children }: LayoutAProps) => {
   );
 };
 
-export default LayoutA;
+export default LayoutB;

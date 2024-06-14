@@ -7,6 +7,7 @@ import Products from "@/pages/Products";
 import ProductManagement from "@/pages/ProductManagement";
 import NewProduct from "@/pages/NewProduct";
 import Cart from "@/pages/Cart";
+import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
               { path: "/product-management", element: <ProductManagement /> },
               { path: "/product-management/new", element: <NewProduct /> },
               { path: "/cart", element: <Cart /> },
+              { path: "/signup", element: <Signup /> },
               { path: "*", element: <NotFound /> }
             ]
           }
