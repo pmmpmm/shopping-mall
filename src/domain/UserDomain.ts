@@ -5,6 +5,11 @@ export interface LoginUserStatus {
   role: UserRole;
 }
 
+export interface MypageUseInfo {
+  username: string;
+  email: string;
+}
+
 export interface UserDomain {
   username: string;
   email: string;

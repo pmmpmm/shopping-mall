@@ -13,7 +13,7 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }: ButtonProps) => {
   const navigate = useNavigate();
-  let style = "text-base font-medium leading-none border border-solid box-border rounded-md ";
+  let style = "text-base font-medium leading-none border border-solid box-border rounded-md whitespace-nowrap ";
 
   switch (size) {
     case "small":
