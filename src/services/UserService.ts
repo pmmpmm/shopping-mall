@@ -9,8 +9,6 @@ const getUserInfo = async (): Promise<UserDomain | null> => {
   return new Promise((resolve) => {
     onAuthStateChanged(auth, async (user) => {
       if (user) {
-        localStorage.setItem(import.meta.env.VITE_FIREBASE_REFRESH_TOKEN, user.refreshToken);
-
         get(child(dbRef, `users/${user.uid}`)) //
           .then((snapshot) => {
             if (snapshot.exists()) {
@@ -20,11 +18,24 @@ const getUserInfo = async (): Promise<UserDomain | null> => {
             }
           });
       } else {
-        localStorage.removeItem(import.meta.env.VITE_FIREBASE_REFRESH_TOKEN);
         resolve(null);
       }
     });
   });
 };
 
-export default { getUserInfo };
+const getUserRole = async (uid: string) => {
+  return get(child(dbRef, `users/${uid}`)) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return snapshot.val().role;
+      } else {
+        console.log("No data available");
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+};
+
+export default { getUserInfo, getUserRole };
