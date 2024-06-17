@@ -43,13 +43,12 @@ const MypageContent = () => {
     const currentPassword = prompt("탈퇴를 하시겠습니까?\n회원탈퇴를 위해서는 비밀번호를 입력해주셔야 합니다.");
 
     if (currentPassword) {
-      AuthService.deleteAccount(currentPassword) //
+      AuthService.deleteAccount(currentPassword, "userInfo") //
         .then((response) => {
           if (typeof response === "string") {
             alert(response);
             return;
           }
-          // queryClient.removeQueries({ queryKey: ["userStutes"] });
           setIsLogin(false);
           alert("탈퇴되었습니다. 이용해 주셔서 감사합니다.");
           navigate("/");

@@ -23,7 +23,7 @@ const Header = () => {
   const handleLogout = () => {
     const logoutConfirm = confirm("로그아웃 하시겠습니까?");
     if (logoutConfirm) {
-      AuthService.logout("userStutes") //
+      AuthService.logout("userInfo") //
         .then(() => {
           setIsLogin(false);
           alert("로그아웃되었습니다. 이용해 주셔서 감사합니다.");

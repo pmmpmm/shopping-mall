@@ -70,22 +70,27 @@ const logout = async (queryKey: string) => {
     });
 };
 
-const deleteAccount = async (currentPassword: string) => {
+const deleteAccount = async (currentPassword: string, queryKey: string) => {
   const user = auth.currentUser;
   if (user) {
     const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
 
-    // 1. 비빌번호로 자격으로 재인증 후
+    // 1. 비빌번호로 자격 재인증 시도
     return reauthenticateWithCredential(user, credential) //
       .then(async (result) => {
-        // 2.비빌번호로 자격으로 재인증 성공
-        return deleteUser(result.user).catch((error) => {
-          // 2-1.재인증은 성공하였으나 새로운 비밀번호 문제로 실패
-          return catchErrorCode(error.code, "회원탈퇴에 실패 하였습니다.");
-        });
+        // 2-1.재인증 성공
+        return deleteUser(result.user) //
+          .then(() => {
+            // 3-1.재인증 성공 후 QueryClient에 저장된 캐시 삭제
+            queryClient.removeQueries({ queryKey: [queryKey] });
+          })
+          .catch((error) => {
+            // 3-2.재인증은 성공하였으나 새로운 비밀번호 문제로 실패
+            return catchErrorCode(error.code, "회원탈퇴에 실패 하였습니다.");
+          });
       })
       .catch((error) => {
-        // 3.비빌번호로 자격으로 재인증 실패
+        // 2-2.비빌번호로 자격으로 재인증 실패
         return catchErrorCode(error.code, "회원탈퇴에 실패 하였습니다.");
       });
   }
@@ -95,6 +100,7 @@ const changePassword = async (currentPassword: string, newPassword: string) => {
   const user = auth.currentUser;
   if (user) {
     const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
+
     return reauthenticateWithCredential(user, credential) //
       .then(async (result) => {
         // 비밀번호 변경
