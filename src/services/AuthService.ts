@@ -7,7 +7,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential
 } from "firebase/auth";
-import { ref, set } from "firebase/database";
+import { ref, remove, set } from "firebase/database";
 import { auth, firebaseDb } from "@/services/FirebaseClient";
 import queryClient from "@/services/QueryClient";
 
@@ -70,47 +70,48 @@ const logout = async (queryKey: string) => {
     });
 };
 
+const changePassword = async (currentPassword: string, newPassword: string) => {
+  const user = auth.currentUser;
+  if (user) {
+    const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
+    // 1. 비빌번호로 자격 재인증 시도
+    return reauthenticateWithCredential(user, credential) //
+      .then(async (result) => {
+        // 2-1.재인증 성공
+        return updatePassword(result.user, newPassword) //
+          .then(() => {
+            // 3-1.재인증 성공 후
+          })
+          .catch((error) => {
+            // 3-2.재인증 성공 후 updatePassword() 실패
+            return catchErrorCode(error.code, "비밀번호 변경에 실패 하였습니다.");
+          });
+      })
+      .catch((error) => {
+        // 2-2.재인증 실패
+        return catchErrorCode(error.code, "비밀번호 변경에 실패 하였습니다.");
+      });
+  }
+};
+
 const deleteAccount = async (currentPassword: string, queryKey: string) => {
   const user = auth.currentUser;
   if (user) {
     const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
 
-    // 1. 비빌번호로 자격 재인증 시도
     return reauthenticateWithCredential(user, credential) //
       .then(async (result) => {
-        // 2-1.재인증 성공
+        remove(ref(firebaseDb, "users/" + result.user.uid));
+
         return deleteUser(result.user) //
           .then(() => {
-            // 3-1.재인증 성공 후 QueryClient에 저장된 캐시 삭제
+            // remove(),set()등 실행 안됨
             queryClient.removeQueries({ queryKey: [queryKey] });
           })
-          .catch((error) => {
-            // 3-2.재인증은 성공하였으나 새로운 비밀번호 문제로 실패
-            return catchErrorCode(error.code, "회원탈퇴에 실패 하였습니다.");
-          });
+          .catch((error) => console.log(error));
       })
       .catch((error) => {
-        // 2-2.비빌번호로 자격으로 재인증 실패
         return catchErrorCode(error.code, "회원탈퇴에 실패 하였습니다.");
-      });
-  }
-};
-
-const changePassword = async (currentPassword: string, newPassword: string) => {
-  const user = auth.currentUser;
-  if (user) {
-    const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
-
-    return reauthenticateWithCredential(user, credential) //
-      .then(async (result) => {
-        // 비밀번호 변경
-        return updatePassword(result.user, newPassword) //
-          .catch((error) => {
-            return catchErrorCode(error.code, "비밀번호 변경에 실패 하였습니다.");
-          });
-      })
-      .catch((error) => {
-        return catchErrorCode(error.code, "비밀번호 변경에 실패 하였습니다.");
       });
   }
 };
