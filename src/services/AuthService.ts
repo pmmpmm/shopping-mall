@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 import { ref, set } from "firebase/database";
 import { auth, firebaseDb } from "@/services/FirebaseClient";
+import queryClient from "@/services/QueryClient";
 
 const signup = async (name: string, email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password)
@@ -61,8 +62,11 @@ const login = async (email: string, password: string) => {
     });
 };
 
-const logout = async () => {
-  return signOut(auth);
+const logout = async (queryKey: string) => {
+  return signOut(auth) //
+    .then(() => {
+      queryClient.removeQueries({ queryKey: [queryKey] });
+    });
 };
 
 export default { signup, login, logout };

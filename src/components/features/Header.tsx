@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { UseLoginContext } from "@/context/LoginContext";
-import queryClient from "@/services/QueryClient";
 import AuthService from "@/services/AuthService";
 import UserService from "@/services/UserService";
 import Logo from "@/components/ui/Logo";
@@ -20,17 +19,14 @@ const Header = () => {
   });
 
   const handleLogout = () => {
-    AuthService.logout() //
-      .then(() => {
-        const logoutConfirm = confirm("로그아웃 하시겠습니까?");
-
-        if (logoutConfirm) {
-          queryClient.removeQueries({ queryKey: ["userStutes"] });
+    const logoutConfirm = confirm("로그아웃 하시겠습니까?");
+    if (logoutConfirm) {
+      AuthService.logout("userStutes") //
+        .then(() => {
           setIsLogin(false);
           alert("로그아웃되었습니다. 이용해 주셔서 감사합니다.");
-          return;
-        }
-      });
+        });
+    }
   };
 
   return (
