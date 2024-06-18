@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import CloudinaryService from "@/services/CloudinaryService";
-import AdminService from "@/services/AdminService";
-import { ProductDomain } from "@/domain/ProductDomain";
+import ProductService from "@/services/ProductService";
+import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
@@ -19,13 +19,13 @@ import Button from "@/components/ui/Button";
 const CreateProductContent = () => {
   const navigate = useNavigate();
 
-  const [productInfo, setProductInfo] = useState<ProductDomain>({
+  const [productInfo, setProductInfo] = useState<ProductValueDomain>({
     id: uuidv4(),
     image: "",
     title: "",
     price: "",
     description: "",
-    category: "top",
+    category: "상의",
     options: []
   });
   const { title, price, description, category, options } = productInfo;
@@ -45,18 +45,26 @@ const CreateProductContent = () => {
 
   // 카테고리 필드
   const handleCategories = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductInfo({ ...productInfo, category: e.target.id });
+    setProductInfo({ ...productInfo, category: e.target.value });
   };
 
   // 옵션 필드
   const handleOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.id;
     const isChecked = e.target.checked;
+    const optLists = [
+      { no: 0, opt: "XS" },
+      { no: 1, opt: "S" },
+      { no: 2, opt: "M" },
+      { no: 3, opt: "L" },
+      { no: 4, opt: "XL" }
+    ];
+    const checkedOpt = optLists.find((item) => item.opt === value) as ProductOption;
 
     if (isChecked) {
-      setProductInfo({ ...productInfo, options: [...productInfo.options, value] });
-    } else if (!isChecked && options.includes(value)) {
-      setProductInfo({ ...productInfo, options: options.filter((item) => item !== value) });
+      setProductInfo({ ...productInfo, options: [...productInfo.options, checkedOpt] });
+    } else if (!isChecked && options.some((option) => option.opt === value)) {
+      setProductInfo({ ...productInfo, options: options.filter((option) => option.opt !== value) });
     }
   };
 
@@ -71,8 +79,10 @@ const CreateProductContent = () => {
         return;
       }
     }
+
     setIsUploading(true);
-    AdminService.setProduct(productInfo) //
+    const optionsSort = productInfo.options.sort((a, b) => a.no - b.no);
+    ProductService.setProduct({ ...productInfo, options: optionsSort.map((item) => item.opt) }) //
       .then(() => {
         setTimeout(() => {
           setIsUploading(false);
@@ -91,12 +101,13 @@ const CreateProductContent = () => {
 
       <FieldFormBlock className="w-full">
         {success && (
-          <div className="flex justify-center pb-9">
-            <span className="text-base">
-              <em className="not-italic text-[24px] align-top">😀</em> 상품이 성공적으로 등록되었습니다.
+          <div className="flex justify-center pb-10">
+            <span className="text-lg font-medium">
+              <em className="not-italic text-[26px] align-top">😀</em> 상품이 성공적으로 등록되었습니다.
             </span>
           </div>
         )}
+
         <div className="flex gap-x-10 w-full">
           <FieldForm>
             <InputField type="file" label="상품 이미지" accept="image/*" name="image" onChange={handleTextfields} />
@@ -117,35 +128,35 @@ const CreateProductContent = () => {
                 value="상의"
                 name="category"
                 onChange={handleCategories}
-                checked={"top" === category ? true : false}
+                checked={"상의" === category ? true : false}
               />
               <Radio
                 id="bottom"
                 value="하의"
                 name="category"
                 onChange={handleCategories}
-                checked={"bottom" === category ? true : false}
+                checked={"하의" === category ? true : false}
               />
               <Radio
                 id="dress"
                 value="원피스"
                 name="category"
                 onChange={handleCategories}
-                checked={"dress" === category ? true : false}
+                checked={"원피스" === category ? true : false}
               />
               <Radio
                 id="shoes"
                 value="신발"
                 name="category"
                 onChange={handleCategories}
-                checked={"shoes" === category ? true : false}
+                checked={"신발" === category ? true : false}
               />
               <Radio
                 id="bag"
                 value="가방"
                 name="category"
                 onChange={handleCategories}
-                checked={"bag" === category ? true : false}
+                checked={"가방" === category ? true : false}
               />
             </FormGroup>
 
@@ -155,35 +166,35 @@ const CreateProductContent = () => {
                 value="XS"
                 name="option"
                 onChange={handleOptions}
-                checked={options.includes("XS") ? true : false}
+                checked={options.some((option) => option.opt === "XS")}
               />
               <CheckBox
                 id="S"
                 value="S"
                 name="option"
                 onChange={handleOptions}
-                checked={options.includes("S") ? true : false}
+                checked={options.some((option) => option.opt === "S")}
               />
               <CheckBox
                 id="M"
                 value="M"
                 name="option"
                 onChange={handleOptions}
-                checked={options.includes("M") ? true : false}
+                checked={options.some((option) => option.opt === "M")}
               />
               <CheckBox
                 id="L"
                 value="L"
                 name="option"
                 onChange={handleOptions}
-                checked={options.includes("L") ? true : false}
+                checked={options.some((option) => option.opt === "L")}
               />
               <CheckBox
                 id="XL"
                 value="XL"
                 name="option"
                 onChange={handleOptions}
-                checked={options.includes("XL") ? true : false}
+                checked={options.some((option) => option.opt === "XL")}
               />
             </FormGroup>
           </FieldForm>
@@ -194,6 +205,7 @@ const CreateProductContent = () => {
             </div>
           )}
         </div>
+
         <FieldFormButtonArea>
           <Button
             title={isUploading ? "상품 등록 중 ...." : "상품 등록"}

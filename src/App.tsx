@@ -7,6 +7,7 @@ import Home from "@/pages/Home";
 import Products from "@/pages/Products";
 import ProductManagement from "@/pages/ProductManagement";
 import CreateProduct from "@/pages/CreateProduct";
+import UpdateProduct from "@/pages/UpdateProduct";
 import Cart from "@/pages/Cart";
 import Signup from "@/pages/Signup";
 import Login from "@/pages/Login";
@@ -36,6 +37,10 @@ const App = () => {
               {
                 path: "/product-management/create",
                 element: <ProtectedRoute requireAdmin element={<CreateProduct />} />
+              },
+              {
+                path: "/product-management/update",
+                element: <ProtectedRoute requireAdmin element={<UpdateProduct />} />
               },
               { path: "/cart", element: <ProtectedRoute element={<Cart />} /> },
               { path: "/mypage", element: <ProtectedRoute element={<Mypage />} /> },
