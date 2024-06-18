@@ -1,17 +1,19 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
   variant: "contain" | "outline";
   size: "small" | "medium" | "large" | "full";
-  onClick?: React.MouseEventHandler<HTMLButtonElement>;
-  position?: "bottom";
+  onClick?: () => void;
   disabled?: boolean;
   href?: string;
+  // 추후 삭제
+  // onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ title, variant, size, onClick, position, disabled, href }: ButtonProps) => {
-  let style = "leading-none ";
+const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }: ButtonProps) => {
+  const navigate = useNavigate();
+  let style = "text-base font-medium leading-none border border-solid box-border rounded-md ";
 
   switch (size) {
     case "small":
@@ -30,31 +32,30 @@ const Button = ({ title, variant, size, onClick, position, disabled, href }: But
 
   switch (variant) {
     case "contain":
-      style +=
-        "text-base text-white font-medium bg-neutral-800 border border-solid border-neutral-800 rounded-md disabled:bg-neutral-600 disabled:border-neutral-600 ";
+      style += "text-white bg-neutral-800 border-neutral-800 disabled:bg-neutral-600 disabled:border-neutral-600 ";
       break;
     case "outline":
-      style += "font-medium border border-solid border-main-700 box-border rounded-md ";
-      break;
-  }
-
-  switch (position) {
-    case "bottom":
-      style += "mt-6";
+      style += "border-neutral-700 ";
       break;
   }
 
   if (href) {
     return (
-      <Link to={href}>
-        <button type="button" className={style} disabled={disabled} onClick={onClick}>
-          {title}
-        </button>
-      </Link>
+      <button
+        className={style}
+        disabled={disabled}
+        onClick={() => {
+          onClick && onClick();
+          navigate("/signup");
+        }}
+        {...otherProps}
+      >
+        {title}
+      </button>
     );
   }
   return (
-    <button type="button" className={style} disabled={disabled} onClick={onClick}>
+    <button className={style} disabled={disabled} onClick={onClick} {...otherProps}>
       {title}
     </button>
   );

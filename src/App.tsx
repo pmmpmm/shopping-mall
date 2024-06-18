@@ -1,6 +1,7 @@
 import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import { LoginContextProvider } from "@/context/LoginContext";
 import queryClient from "@/services/QueryClient";
 import Home from "@/pages/Home";
 import Products from "@/pages/Products";
@@ -9,6 +10,7 @@ import NewProduct from "@/pages/NewProduct";
 import Cart from "@/pages/Cart";
 import Signup from "@/pages/Signup";
 import NotFound from "@/pages/NotFound";
+import Login from "@/pages/Login";
 
 const App = () => {
   return (
@@ -17,7 +19,11 @@ const App = () => {
       <RouterProvider
         router={createBrowserRouter([
           {
-            element: <Outlet />,
+            element: (
+              <LoginContextProvider>
+                <Outlet />
+              </LoginContextProvider>
+            ),
             children: [
               { path: "/", element: <Home /> },
               { path: "/products", element: <Products /> },
@@ -25,6 +31,7 @@ const App = () => {
               { path: "/product-management/new", element: <NewProduct /> },
               { path: "/cart", element: <Cart /> },
               { path: "/signup", element: <Signup /> },
+              { path: "/login", element: <Login /> },
               { path: "*", element: <NotFound /> }
             ]
           }

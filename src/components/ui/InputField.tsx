@@ -1,9 +1,7 @@
-import { SetStateAction } from "react";
-
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  setValue?: React.Dispatch<SetStateAction<string | object>>;
-  setFile?: React.Dispatch<SetStateAction<FileList | undefined | null>>;
+  setValue?: React.Dispatch<React.SetStateAction<string | object>>;
+  setFile?: React.Dispatch<React.SetStateAction<FileList | undefined | null>>;
   setOnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
