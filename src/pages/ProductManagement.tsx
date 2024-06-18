@@ -1,8 +1,11 @@
+import ProductManagementContent from "@/components/features/ProductManagementContent";
+import LayoutB from "@/components/layouts/LayoutB";
+
 const ProductManagement = () => {
   return (
-    <div>
-      <p>ProductManagement</p>
-    </div>
+    <LayoutB>
+      <ProductManagementContent />
+    </LayoutB>
   );
 };
 

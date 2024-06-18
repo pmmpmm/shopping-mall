@@ -13,20 +13,20 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }: ButtonProps) => {
   const navigate = useNavigate();
-  let style = "text-base font-medium leading-none border border-solid box-border rounded-md whitespace-nowrap ";
+  let style = "text-base leading-none border border-solid box-border rounded-md whitespace-nowrap ";
 
   switch (size) {
     case "small":
-      style += "px-3 py-[12px] ";
+      style += "px-3 py-[12px] text-sm ";
       break;
     case "medium":
-      style += "px-4 py-[16px] ";
+      style += "px-4 py-[16px] text-sm ";
       break;
     case "large":
-      style += "px-6 py-[18px] ";
+      style += "px-6 py-[18px] font-medium ";
       break;
     case "full":
-      style += "px-6 py-[18px] w-full ";
+      style += "px-6 py-[18px] w-full font-medium ";
       break;
   }
 
@@ -46,7 +46,7 @@ const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }
         disabled={disabled}
         onClick={() => {
           onClick && onClick();
-          navigate("/signup");
+          navigate(href);
         }}
         {...otherProps}
       >
