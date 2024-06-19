@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UseLoginContext } from "@/context/LoginContext";
 import AuthService from "@/services/AuthService";
 import UserService from "@/services/UserService";
-import { LoginUserStatus } from "@/domain/UserDomain";
+import { LoginUserStatus, UserRole } from "@/domain/UserDomain";
 import Logo from "@/components/ui/Logo";
 
 const UtilityMenuBar = () => {
@@ -60,9 +60,9 @@ const Header = () => {
             </Link>
             <UtilityMenuBar />
 
-            {userStutes.role === "admin" && (
+            {userStutes.role === UserRole.ADMIN && (
               <>
-                <Link to="/products/new">상품 관리</Link>
+                <Link to="/product-management">상품 관리</Link>
                 <UtilityMenuBar />
               </>
             )}

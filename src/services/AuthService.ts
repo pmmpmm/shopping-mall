@@ -10,6 +10,7 @@ import {
 import { ref, remove, set } from "firebase/database";
 import { auth, firebaseDb } from "@/services/FirebaseClient";
 import queryClient from "@/services/QueryClient";
+import UserService from "@/services/UserService";
 
 const catchErrorCode = (errorCode: string, defaultMessage: string) => {
   switch (errorCode) {
@@ -33,7 +34,6 @@ const catchErrorCode = (errorCode: string, defaultMessage: string) => {
 const signup = async (name: string, email: string, password: string) => {
   return createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // 회원가입 완료
       return userCredential.user;
     })
     .then((user) => {
@@ -54,8 +54,10 @@ const signup = async (name: string, email: string, password: string) => {
 
 const login = async (email: string, password: string) => {
   return signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-      // 로그인 완료
+    .then(async (userCredential) => {
+      localStorage.setItem(import.meta.env.VITE_FIREBASE_REFRESH_TOKEN, userCredential.user.refreshToken);
+      localStorage.setItem(import.meta.env.VITE_USER_ROLE, await UserService.getUserRole(userCredential.user.uid));
+
       return userCredential.user;
     })
     .catch((error) => {
@@ -66,6 +68,8 @@ const login = async (email: string, password: string) => {
 const logout = async (queryKey: string) => {
   return signOut(auth) //
     .then(() => {
+      localStorage.removeItem(import.meta.env.VITE_FIREBASE_REFRESH_TOKEN);
+      localStorage.removeItem(import.meta.env.VITE_USER_ROLE);
       queryClient.removeQueries({ queryKey: [queryKey] });
     });
 };
