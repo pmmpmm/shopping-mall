@@ -27,6 +27,7 @@ const getAllProducts = async () => {
         return Object.values(snapshot.val()) as ProductValueDomain[];
       } else {
         console.log("No data available");
+        return null;
       }
     })
     .catch((error) => console.error(error));
