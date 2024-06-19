@@ -1,10 +1,9 @@
 import LayoutB from "@/components/layouts/LayoutB";
-import ProductManagementContent from "@/components/features/ProductManagementContent";
 
 const ProductManagement = () => {
   return (
     <LayoutB>
-      <ProductManagementContent />
+      <p>UpdateProduct</p>
     </LayoutB>
   );
 };

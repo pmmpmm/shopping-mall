@@ -6,7 +6,8 @@ import queryClient from "@/services/QueryClient";
 import Home from "@/pages/Home";
 import Products from "@/pages/Products";
 import ProductManagement from "@/pages/ProductManagement";
-import NewProduct from "@/pages/NewProduct";
+import CreateProduct from "@/pages/CreateProduct";
+import UpdateProduct from "@/pages/UpdateProduct";
 import Cart from "@/pages/Cart";
 import Signup from "@/pages/Signup";
 import Login from "@/pages/Login";
@@ -29,8 +30,18 @@ const App = () => {
             children: [
               { path: "/", element: <Home /> },
               { path: "/products", element: <Products /> },
-              { path: "/product-management", element: <ProtectedRoute requireAdmin element={<ProductManagement />} /> },
-              { path: "/product-management/new", element: <ProtectedRoute requireAdmin element={<NewProduct />} /> },
+              {
+                path: "/product-management",
+                element: <ProtectedRoute requireAdmin element={<ProductManagement />} />
+              },
+              {
+                path: "/product-management/create",
+                element: <ProtectedRoute requireAdmin element={<CreateProduct />} />
+              },
+              {
+                path: "/product-management/update",
+                element: <ProtectedRoute requireAdmin element={<UpdateProduct />} />
+              },
               { path: "/cart", element: <ProtectedRoute element={<Cart />} /> },
               { path: "/mypage", element: <ProtectedRoute element={<Mypage />} /> },
               { path: "/signup", element: <Signup /> },
