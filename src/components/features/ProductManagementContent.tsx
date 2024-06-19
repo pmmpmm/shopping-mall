@@ -1,10 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
+import ProductService from "@/services/ProductService";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "../ui/FieldFormBlock";
-import Button from "../ui/Button";
-import ProductService from "@/services/ProductService";
-import ProductThumbList from "../ui/ProductThumbList";
+import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ProductManagementList from "@/components/ui/ProductManagementList";
+import Button from "@/components/ui/Button";
 
 const ProductManagementContent = () => {
   const { data: products } = useQuery({
@@ -23,7 +23,11 @@ const ProductManagementContent = () => {
           {products ? (
             <ul className="flex flex-col">
               {products.map((item, idx) => (
-                <ProductThumbList key={`item-${idx}`} item={item} />
+                <ProductManagementList
+                  key={`item-${idx}`}
+                  item={item}
+                  onClick={() => ProductService.removeProduct(item.id)}
+                />
               ))}
             </ul>
           ) : (

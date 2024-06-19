@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
+import { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
 import CloudinaryService from "@/services/CloudinaryService";
 import ProductService from "@/services/ProductService";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
@@ -16,19 +16,30 @@ import Radio from "@/components/ui/Radio";
 import CheckBox from "@/components/ui/CheckBox";
 import Button from "@/components/ui/Button";
 
-const CreateProductContent = () => {
+const UpdateProductContent = () => {
   const navigate = useNavigate();
+  const { search } = useLocation();
+  const id = new URLSearchParams(search).get("id") as string;
+
+  const { data: product } = useQuery({
+    queryKey: ["product", id],
+    queryFn: ProductService.getProduct
+  });
+
+  useEffect(() => {
+    if (product) setProductInfo({ ...product });
+  }, [product]);
 
   const [productInfo, setProductInfo] = useState<ProductValueDomain>({
-    id: uuidv4(),
+    id: id,
     image: "",
     title: "",
     price: "",
     description: "",
-    category: "상의",
+    category: "",
     options: []
   });
-  const { title, price, description, category, options } = productInfo;
+  const { image, title, price, description, category, options } = productInfo;
 
   // 텍스트 필드
   const [imageFile, setImageFile] = useState<File | null>();
@@ -71,7 +82,7 @@ const CreateProductContent = () => {
   // 상품 등록
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const createNewProduct = () => {
+  const updateProduct = () => {
     for (const key in productInfo) {
       const value = productInfo[key];
       if (value === "" || value.length === 0) {
@@ -97,13 +108,13 @@ const CreateProductContent = () => {
 
   return (
     <ContentLayoutA>
-      <ContentTitle title="상품 등록" />
+      <ContentTitle title="상품 수정" />
 
       <FieldFormBlock className="w-full">
         {success && (
           <div className="flex justify-center pb-12">
             <span className="text-lg font-medium">
-              <em className="not-italic text-[26px] align-top">😀</em> 상품이 성공적으로 등록되었습니다.
+              <em className="not-italic text-[26px] align-top">😀</em> 상품이 성공적으로 수정되었습니다.
             </span>
           </div>
         )}
@@ -199,6 +210,11 @@ const CreateProductContent = () => {
             </FormGroup>
           </FieldForm>
 
+          {!imageFile && !!product && (
+            <div className="w-2/6 flex-none ">
+              <img src={image} alt="상품 이미지" className="w-full h-auto" />
+            </div>
+          )}
           {imageFile && (
             <div className="w-2/6 flex-none ">
               <img src={URL.createObjectURL(imageFile)} alt="상품 이미지" className="w-full h-auto" />
@@ -209,10 +225,10 @@ const CreateProductContent = () => {
         <FieldFormButtonArea>
           <Button title="목록으로 돌아가기" variant="outline" size="large" href="/product-management" />
           <Button
-            title={isUploading ? "상품 등록 중 ...." : "상품 등록"}
+            title={isUploading ? "상품 수정 중 ...." : "상품 수정"}
             variant="contain"
             size="full"
-            onClick={createNewProduct}
+            onClick={updateProduct}
           />
         </FieldFormButtonArea>
       </FieldFormBlock>
@@ -220,4 +236,4 @@ const CreateProductContent = () => {
   );
 };
 
-export default CreateProductContent;
+export default UpdateProductContent;
