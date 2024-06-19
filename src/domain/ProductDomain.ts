@@ -14,11 +14,14 @@ export type ProductValueDomain = {
   options: ProductOption[];
 };
 
-export type ProductDomain = {
+export type ProductListDomain = {
   id: string;
   image: string;
   title: string;
   price: string;
+};
+
+export type ProductDetailDomain = ProductListDomain & {
   description: string;
   category: string;
   options: string[];
