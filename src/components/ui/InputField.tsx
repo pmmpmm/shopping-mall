@@ -1,6 +1,6 @@
 interface InputFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
-  setValue?: React.Dispatch<React.SetStateAction<string | object>>;
+  setValue?: React.Dispatch<React.SetStateAction<string>>;
   setFile?: React.Dispatch<React.SetStateAction<FileList | undefined | null>>;
   setOnChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }

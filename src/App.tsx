@@ -9,8 +9,9 @@ import ProductManagement from "@/pages/ProductManagement";
 import NewProduct from "@/pages/NewProduct";
 import Cart from "@/pages/Cart";
 import Signup from "@/pages/Signup";
-import NotFound from "@/pages/NotFound";
 import Login from "@/pages/Login";
+import Mypage from "@/pages/Mypage";
+import NotFound from "@/pages/NotFound";
 
 const App = () => {
   return (
@@ -32,6 +33,7 @@ const App = () => {
               { path: "/cart", element: <Cart /> },
               { path: "/signup", element: <Signup /> },
               { path: "/login", element: <Login /> },
+              { path: "/mypage", element: <Mypage /> },
               { path: "*", element: <NotFound /> }
             ]
           }

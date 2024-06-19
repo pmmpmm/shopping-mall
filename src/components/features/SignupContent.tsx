@@ -25,8 +25,8 @@ const SignupContent = () => {
           alert(response);
           return;
         }
-        alert("회원가입이 완료되었습니다.");
-        naviget("/");
+        alert("회원가입이 성공하였습니다.");
+        naviget("/login");
       });
   };
 
