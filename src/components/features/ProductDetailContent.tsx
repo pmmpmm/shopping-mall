@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { CartProductDomain, ProductOption } from "@/domain/ProductDomain";
+import { ProductOption } from "@/domain/ProductDomain";
+import { CartProductDomain } from "@/domain/CartDomain";
 import ProductService from "@/services/ProductService";
+import CartService from "@/services/CartService";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import FormGroup from "@/components/ui/FormGroup";
 import Radio from "@/components/ui/Radio";
@@ -38,6 +40,10 @@ const ProductDetailContent = () => {
     const option = optionSizeList.find((item) => item.opt === e.target.value) as ProductOption;
     setCartProductInfo({ ...cartProductInfo, option });
   };
+
+  // const addCartProduct = async () => {
+  //   CartService.setCartProduct(cartProductInfo);
+  // };
 
   return (
     <>
