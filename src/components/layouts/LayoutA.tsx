@@ -5,7 +5,8 @@ import CategoryNav from "@/components/features/CategoryNav";
 interface LayoutAProps {
   children: React.ReactNode;
 }
-
+//추후 삭제
+//<WrapperLayoutA className="border-b border-solid border-gray-200">
 const LayoutA = ({ children }: LayoutAProps) => {
   return (
     <>
@@ -13,7 +14,7 @@ const LayoutA = ({ children }: LayoutAProps) => {
         <Header />
       </WrapperLayoutA>
 
-      <WrapperLayoutA className="border-b border-solid border-gray-200">
+      <WrapperLayoutA>
         <CategoryNav />
       </WrapperLayoutA>
 

@@ -37,7 +37,7 @@ const CategoryNav = () => {
               const { value } = e.target as HTMLButtonElement;
               navigate(`/products?category=${value}`);
             }}
-            className={`text-[15px] px-2 py-2 font-medium text-gray-800`}
+            className={`text-[15px] px-2 py-2 font-semibold text-gray-800`}
           >
             {nav.title}
           </button>
