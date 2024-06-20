@@ -3,11 +3,11 @@ import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { CartProductDomain, ProductOption } from "@/domain/ProductDomain";
 import ProductService from "@/services/ProductService";
-import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import FormGroup from "@/components/ui/FormGroup";
 import Radio from "@/components/ui/Radio";
 import Button from "@/components/ui/Button";
+import { optionSizeList } from "@/common/productOption";
 
 const ProductDetailContent = () => {
   const { search } = useLocation();

@@ -31,6 +31,15 @@ export type ProductListDomain = {
   price: string;
 };
 
+export type CartProductDomain = {
+  id: string;
+  image: string;
+  title: string;
+  price: string;
+  option: ProductOption | null;
+  quantity: number;
+};
+
 // export type ProductDetailDomain = ProductListDomain & {
 //   description: string;
 //   category: string;
