@@ -1,17 +1,21 @@
 import { useQuery } from "@tanstack/react-query";
+import ProductService from "@/services/ProductService";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "../ui/FieldFormBlock";
-import Button from "../ui/Button";
-import ProductService from "@/services/ProductService";
-import ProductThumbList from "../ui/ProductThumbList";
+import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ProductManagementList from "@/components/ui/ProductManagementList";
+import Button from "@/components/ui/Button";
 
 const ProductManagementContent = () => {
-  const { data: products } = useQuery({
+  const { refetch, data: products } = useQuery({
     queryKey: ["all-products"],
     queryFn: ProductService.getAllProducts
   });
 
+  const deleteProduct = async (id: string) => {
+    ProductService.removeProduct(id) //
+      .then(() => refetch());
+  };
   return (
     <ContentLayoutA>
       <ContentTitle title="상품 관리" />
@@ -23,11 +27,21 @@ const ProductManagementContent = () => {
           {products ? (
             <ul className="flex flex-col">
               {products.map((item, idx) => (
-                <ProductThumbList key={`item-${idx}`} item={item} />
+                <ProductManagementList
+                  key={`item-${idx}`}
+                  item={item}
+                  onClick={() => {
+                    deleteProduct(item.id);
+                  }}
+                />
               ))}
             </ul>
           ) : (
-            <p>등록된 상품이 없습니다.</p>
+            <div className="flex justify-center py-8">
+              <span className="text-lg font-medium">
+                <em className="not-italic text-[26px] align-top">😅</em> 등록된 상품이 없습니다.
+              </span>
+            </div>
           )}
         </div>
       </FieldFormBlock>

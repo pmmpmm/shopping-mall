@@ -5,7 +5,7 @@ interface FieldFormButtonAreaProps {
 }
 
 const FieldFormButtonArea = ({ children }: FieldFormButtonAreaProps) => {
-  let style = "mt-7 ";
+  let style = "mt-10 ";
 
   if ((children as React.ReactNode[]).length > 1) {
     style += "flex flex-row gap-2";
