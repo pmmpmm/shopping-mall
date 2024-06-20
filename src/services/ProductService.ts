@@ -2,9 +2,7 @@ import { ref, child, set, get, remove } from "firebase/database";
 import { firebaseDb } from "@/services/FirebaseClient";
 import { ProductValueDomain } from "@/domain/ProductDomain";
 
-type QueryKeyType = {
-  queryKey: string[];
-};
+type QueryKeyType = { queryKey: string[] };
 
 const setProduct = async (productInfo: ProductValueDomain) => {
   const { id, image, title, price, description, category, options } = productInfo;

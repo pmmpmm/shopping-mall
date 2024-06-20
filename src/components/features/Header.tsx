@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { UseLoginContext } from "@/context/LoginContext";
 import AuthService from "@/services/AuthService";
 import UserService from "@/services/UserService";
-import { LoginUserStatus, UserRole } from "@/domain/UserDomain";
+import { UserRole } from "@/domain/UserDomain";
 import Logo from "@/components/ui/Logo";
 
 const UtilityMenuBar = () => {
@@ -12,9 +12,10 @@ const UtilityMenuBar = () => {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { isLogin, setIsLogin } = UseLoginContext();
-  const { data: userStutes } = useQuery<LoginUserStatus | null>({
-    queryKey: ["userInfo"],
+  const { userId, isLogin, setIsLogin } = UseLoginContext();
+
+  const { data: userStutes } = useQuery({
+    queryKey: ["userInfo", userId],
     queryFn: UserService.getUserInfo,
     enabled: isLogin,
     staleTime: 1000 * 60 * 60

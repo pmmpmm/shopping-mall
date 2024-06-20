@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { MypageUserInfo } from "@/domain/UserDomain";
 import UserService from "@/services/UserService";
 import AuthService from "@/services/AuthService";
 import { UseLoginContext } from "@/context/LoginContext";
@@ -15,10 +14,10 @@ import Button from "@/components/ui/Button";
 
 const MypageContent = () => {
   const navigate = useNavigate();
-  const { setIsLogin } = UseLoginContext();
+  const { userId, setIsLogin } = UseLoginContext();
 
-  const { data: userInfo } = useQuery<MypageUserInfo | null>({
-    queryKey: ["userInfo"],
+  const { data: userInfo } = useQuery({
+    queryKey: ["userInfo", userId],
     queryFn: UserService.getUserInfo
   });
 
