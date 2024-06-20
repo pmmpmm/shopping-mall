@@ -1,33 +1,14 @@
 import { useLocation } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import ProductService from "@/services/ProductService";
+import { categoryToKrUtil } from "@/common/categoryToKrUtil";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import ProductCard from "@/components/ui/ProductCard";
 
 const ProductsContent = () => {
   const { search } = useLocation();
-  let category = new URLSearchParams(search).get("category") as string;
-  switch (category) {
-    case "all":
-      category = "전체";
-      break;
-    case "top":
-      category = "상의";
-      break;
-    case "bottom":
-      category = "하의";
-      break;
-    case "dress":
-      category = "원피스";
-      break;
-    case "shoes":
-      category = "신발";
-      break;
-    case "bag":
-      category = "가방";
-      break;
-  }
+  const category = categoryToKrUtil(new URLSearchParams(search).get("category") as string) as string;
 
   const { data: products } = useQuery({
     queryKey: ["all-products"],
@@ -51,7 +32,6 @@ const ProductsContent = () => {
             <ProductCard id={product.id} image={product.image} title={product.title} price={product.price} />
           </li>
         ))}
-        <li></li>
       </ul>
     </ContentLayoutA>
   );
