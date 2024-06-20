@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import CloudinaryService from "@/services/CloudinaryService";
 import ProductService from "@/services/ProductService";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
+import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
@@ -50,16 +51,9 @@ const CreateProductContent = () => {
 
   // 옵션 필드
   const handleOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const optList = [
-      { no: 0, opt: "XS" },
-      { no: 1, opt: "S" },
-      { no: 2, opt: "M" },
-      { no: 3, opt: "L" },
-      { no: 4, opt: "XL" }
-    ];
     const value = e.target.id;
     const isChecked = e.target.checked;
-    const checkedOpt = optList.find((item) => item.opt === value) as ProductOption;
+    const checkedOpt = optionSizeList.find((item) => item.opt === value) as ProductOption;
 
     if (isChecked) {
       setProductInfo({ ...productInfo, options: [...productInfo.options, checkedOpt] });

@@ -14,6 +14,16 @@ export type ProductValueDomain = {
   options: ProductOption[];
 };
 
+export type ProductThumbListDomain = {
+  id: string;
+  image: string;
+  title: string;
+  price: string;
+  description: string;
+  category?: string;
+  options: ProductOption[];
+};
+
 export type ProductListDomain = {
   id: string;
   image: string;
@@ -21,8 +31,8 @@ export type ProductListDomain = {
   price: string;
 };
 
-export type ProductDetailDomain = ProductListDomain & {
-  description: string;
-  category: string;
-  options: string[];
-};
+// export type ProductDetailDomain = ProductListDomain & {
+//   description: string;
+//   category: string;
+//   options: string[];
+// };
