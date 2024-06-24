@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import { ProductValueDomain } from "@/domain/ProductDomain";
+import { ProductThumbListDomain } from "@/domain/ProductDomain";
 
-const ProductThumbList = (props: { item: ProductValueDomain }) => {
+const ProductThumbList = (props: { item: ProductThumbListDomain }) => {
   const { id, image, title, price, category, options } = props.item;
 
   return (
@@ -13,9 +13,11 @@ const ProductThumbList = (props: { item: ProductValueDomain }) => {
         <div className="py-1">
           <p className="text-lg">{title}</p>
           <div className="flex flex-col gap-1.5 pt-3 text-sm">
-            <p>
-              카테고리: <span className="font-medium">{category}</span>
-            </p>
+            {category && (
+              <p>
+                카테고리: <span className="font-medium">{category}</span>
+              </p>
+            )}
             <p>
               옵션: <span className="font-medium">{options.map((option) => option.opt).join(", ")}</span>
             </p>

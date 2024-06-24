@@ -5,6 +5,7 @@ import { LoginContextProvider } from "@/context/LoginContext";
 import queryClient from "@/services/QueryClient";
 import Home from "@/pages/Home";
 import Products from "@/pages/Products";
+import ProductDetail from "@/pages/ProductDetail";
 import ProductManagement from "@/pages/ProductManagement";
 import CreateProduct from "@/pages/CreateProduct";
 import UpdateProduct from "@/pages/UpdateProduct";
@@ -30,6 +31,7 @@ const App = () => {
             children: [
               { path: "/", element: <Home /> },
               { path: "/products", element: <Products /> },
+              { path: "/productpage", element: <ProductDetail /> },
               {
                 path: "/product-management",
                 element: <ProtectedRoute requireAdmin element={<ProductManagement />} />
