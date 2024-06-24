@@ -3,15 +3,16 @@ import { useNavigate } from "react-router-dom";
 interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
   variant: "contain" | "outline";
-  size: "small" | "medium" | "large" | "full";
+  size?: "small" | "medium" | "large" | "full";
   onClick?: () => void;
   disabled?: boolean;
   href?: string;
+  className?: string;
   // 추후 삭제
   // onClick?: React.MouseEventHandler<HTMLButtonElement>;
 }
 
-const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }: ButtonProps) => {
+const Button = ({ title, variant, size, onClick, disabled, href, className, ...otherProps }: ButtonProps) => {
   const navigate = useNavigate();
   let style = "text-base leading-none border border-solid box-border rounded-md whitespace-nowrap ";
 
@@ -42,7 +43,7 @@ const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }
   if (href) {
     return (
       <button
-        className={style}
+        className={`${style} ${className}`}
         disabled={disabled}
         onClick={() => {
           onClick && onClick();
@@ -55,7 +56,7 @@ const Button = ({ title, variant, size, onClick, disabled, href, ...otherProps }
     );
   }
   return (
-    <button className={style} disabled={disabled} onClick={onClick} {...otherProps}>
+    <button className={`${style} ${className}`} disabled={disabled} onClick={onClick} {...otherProps}>
       {title}
     </button>
   );
