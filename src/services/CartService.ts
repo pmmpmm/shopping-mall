@@ -1,4 +1,4 @@
-import { ref, child, set, get } from "firebase/database";
+import { ref, child, set, get, remove } from "firebase/database";
 import { firebaseDb } from "@/services/FirebaseClient";
 import { CartProductDomain } from "@/domain/CartDomain";
 
@@ -30,4 +30,8 @@ const getAllCartProduct = async ({ queryKey }: QueryKeyType) => {
     .catch((error) => console.error(error));
 };
 
-export default { setCartProduct, getAllCartProduct };
+const removeCartProduct = async (uid: string, id: string) => {
+  return remove(ref(firebaseDb, `carts/${uid}/${id}`));
+};
+
+export default { setCartProduct, getAllCartProduct, removeCartProduct };
