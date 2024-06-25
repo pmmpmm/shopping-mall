@@ -29,7 +29,7 @@ const ProductDetailContent = () => {
     image: "",
     title: "",
     price: "",
-    option: null,
+    options: [],
     quantity: 1
   });
 
@@ -41,7 +41,7 @@ const ProductDetailContent = () => {
 
   const handleOption = (e: React.ChangeEvent<HTMLInputElement>) => {
     const option = optionSizeList.find((item) => item.opt === e.target.value) as ProductOption;
-    setCartProductInfo({ ...cartProductInfo, option });
+    setCartProductInfo({ ...cartProductInfo, options: [option] });
   };
 
   const addCartProduct = async () => {

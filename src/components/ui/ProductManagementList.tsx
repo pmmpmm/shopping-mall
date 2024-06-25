@@ -10,7 +10,14 @@ interface ProductManagementListProps {
 const ProductManagementList = ({ item, onClick }: ProductManagementListProps) => {
   return (
     <li className="flex flex-row justify-end items-center py-4 gap-4 border-b border-gray-200 border-solid last:border-0 last:pb-0">
-      <ProductThumbList item={item} />
+      <ProductThumbList
+        id={item.id}
+        image={item.image}
+        title={item.title}
+        price={item.price}
+        category={item.category}
+        options={item.options}
+      />
       <Button title="상품 삭제" variant="outline" size="small" onClick={onClick} />
     </li>
   );

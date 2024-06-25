@@ -19,7 +19,7 @@ export type ProductThumbListDomain = {
   image: string;
   title: string;
   price: string;
-  description: string;
+  description?: string;
   category?: string;
   options: ProductOption[];
 };

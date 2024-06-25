@@ -1,9 +1,16 @@
 import { Link } from "react-router-dom";
-import { ProductThumbListDomain } from "@/domain/ProductDomain";
+import { ProductOption } from "@/domain/ProductDomain";
 
-const ProductThumbList = (props: { item: ProductThumbListDomain }) => {
-  const { id, image, title, price, category, options } = props.item;
+interface ProductThumbListProps {
+  id: string;
+  image: string;
+  title: string;
+  price: string;
+  category?: string;
+  options: ProductOption[];
+}
 
+const ProductThumbList = ({ id, image, title, price, category, options }: ProductThumbListProps) => {
   return (
     <Link to={`/product-management/update?id=${id}`} className="w-full">
       <div className="flex flex-row gap-4 items-center">
