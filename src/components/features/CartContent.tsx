@@ -4,9 +4,9 @@ import { UseLoginContext } from "@/context/LoginContext";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import FieldFormButtonArea from "@/components/ui/FieldFormButtonArea";
 import CartList from "@/components/ui/CartList";
-import FieldFormButtonArea from "../ui/FieldFormButtonArea";
-import Button from "../ui/Button";
+import Button from "@/components/ui/Button";
 
 const CartContent = () => {
   const { userId } = UseLoginContext();
@@ -15,6 +15,12 @@ const CartContent = () => {
     queryKey: ["cartProduct", userId],
     queryFn: CartService.getAllCartProduct
   });
+
+  const totalPrice = cartProduct
+    ?.map((product) => parseInt(product.price) * product.quantity)
+    .reduce((acc, cur) => acc + cur, 0) as number;
+
+  const deliveryCharge = 3000;
 
   return (
     <ContentLayoutA>
@@ -39,17 +45,17 @@ const CartContent = () => {
           <div className="flex flex-row justify-between items-center">
             <div className="px-10 text-center">
               <span>상품 총 금액</span>
-              <p className="text-xl font-semibold">100000</p>
+              <p className="text-xl font-semibold">{totalPrice}</p>
             </div>
             <p>+</p>
             <div className="px-10 text-center">
               <span>배송비</span>
-              <p className="text-xl font-semibold">3000</p>
+              <p className="text-xl font-semibold">{deliveryCharge}</p>
             </div>
             <p>=</p>
             <div className="px-10 text-center">
               <span>총 금액</span>
-              <p className="text-xl font-semibold">103000</p>
+              <p className="text-xl font-semibold">{totalPrice + deliveryCharge}</p>
             </div>
           </div>
         </div>
