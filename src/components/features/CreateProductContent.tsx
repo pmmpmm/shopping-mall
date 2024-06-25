@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import CloudinaryService from "@/services/CloudinaryService";
-import ProductService from "@/services/ProductService";
+import useProducts from "@/hooks/useProducts";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
 import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
@@ -63,6 +63,7 @@ const CreateProductContent = () => {
   };
 
   // 상품 등록
+  const { setProduct } = useProducts();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const createNewProduct = () => {
@@ -76,17 +77,21 @@ const CreateProductContent = () => {
 
     setIsUploading(true);
     const optionsSort = productInfo.options.sort((a, b) => a.no - b.no);
-    ProductService.setProduct({ ...productInfo, options: optionsSort }) //
-      .then(() => {
-        setTimeout(() => {
-          setIsUploading(false);
-          setSuccess(true);
-        }, 1000);
-        setTimeout(() => {
-          setSuccess(false);
-          navigate("/product-management");
-        }, 2000);
-      });
+    setProduct.mutate(
+      { product: { ...productInfo, options: optionsSort } },
+      {
+        onSuccess: () => {
+          setTimeout(() => {
+            setIsUploading(false);
+            setSuccess(true);
+          }, 1000);
+          setTimeout(() => {
+            setSuccess(false);
+            navigate("/product-management");
+          }, 2000);
+        }
+      }
+    );
   };
 
   return (

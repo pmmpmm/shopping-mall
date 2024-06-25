@@ -1,6 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import ProductService from "@/services/ProductService";
+import useProducts from "@/hooks/useProducts";
 import { categoryToKrUtil } from "@/common/categoryToKrUtil";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
@@ -10,18 +9,9 @@ const ProductsContent = () => {
   const { search } = useLocation();
   const category = categoryToKrUtil(new URLSearchParams(search).get("category") as string) as string;
 
-  const { data: products } = useQuery({
-    queryKey: ["all-products"],
-    queryFn: ProductService.getAllProducts,
-    select: (response) => {
-      if (response) {
-        return response.filter((item) => {
-          if (category === "전체") return item;
-          return item.category === category;
-        });
-      }
-    }
-  });
+  const {
+    getAllProducts: { data: products }
+  } = useProducts();
 
   return (
     <ContentLayoutA>

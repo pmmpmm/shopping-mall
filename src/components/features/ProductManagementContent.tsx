@@ -1,5 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import ProductService from "@/services/ProductService";
+import useProducts from "@/hooks/useProducts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
@@ -7,15 +6,17 @@ import ProductManagementList from "@/components/ui/ProductManagementList";
 import Button from "@/components/ui/Button";
 
 const ProductManagementContent = () => {
-  const { refetch, data: products } = useQuery({
-    queryKey: ["all-products"],
-    queryFn: ProductService.getAllProducts
-  });
+  const { deleteProduct } = useProducts();
 
-  const deleteProduct = async (id: string) => {
-    ProductService.removeProduct(id) //
-      .then(() => refetch());
+  const {
+    getAllProducts: { data: products }
+  } = useProducts();
+
+  const handleDeleteProduct = (id: string) => {
+    const confirmDelete = confirm("상품을 삭제하시겠습니까?");
+    if (confirmDelete) deleteProduct.mutate({ id });
   };
+
   return (
     <ContentLayoutA>
       <ContentTitle title="상품 관리" />
@@ -27,13 +28,7 @@ const ProductManagementContent = () => {
           {products ? (
             <ul className="flex flex-col">
               {products.map((item, idx) => (
-                <ProductManagementList
-                  key={`item-${idx}`}
-                  item={item}
-                  onClick={() => {
-                    deleteProduct(item.id);
-                  }}
-                />
+                <ProductManagementList key={`item-${idx}`} item={item} onClick={() => handleDeleteProduct(item.id)} />
               ))}
             </ul>
           ) : (

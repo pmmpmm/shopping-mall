@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import useProducts from "@/hooks/useProducts";
 import CloudinaryService from "@/services/CloudinaryService";
-import ProductService from "@/services/ProductService";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
 import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
@@ -22,10 +21,9 @@ const UpdateProductContent = () => {
   const { search } = useLocation();
   const id = new URLSearchParams(search).get("id") as string;
 
-  const { data: product } = useQuery({
-    queryKey: ["product", id],
-    queryFn: ProductService.getProduct
-  });
+  const {
+    getProduct: { data: product }
+  } = useProducts();
 
   useEffect(() => {
     if (product) setProductInfo({ ...product });
@@ -74,6 +72,7 @@ const UpdateProductContent = () => {
   };
 
   // 상품 등록
+  const { setProduct } = useProducts();
   const [isUploading, setIsUploading] = useState(false);
   const [success, setSuccess] = useState(false);
   const updateProduct = () => {
@@ -87,17 +86,21 @@ const UpdateProductContent = () => {
 
     setIsUploading(true);
     const optionsSort = productInfo.options.sort((a, b) => a.no - b.no);
-    ProductService.setProduct({ ...productInfo, options: optionsSort }) //
-      .then(() => {
-        setTimeout(() => {
-          setIsUploading(false);
-          setSuccess(true);
-        }, 1000);
-        setTimeout(() => {
-          setSuccess(false);
-          navigate("/product-management");
-        }, 2000);
-      });
+    setProduct.mutate(
+      { product: { ...productInfo, options: optionsSort } },
+      {
+        onSuccess: () => {
+          setTimeout(() => {
+            setIsUploading(false);
+            setSuccess(true);
+          }, 1000);
+          setTimeout(() => {
+            setSuccess(false);
+            navigate("/product-management");
+          }, 2000);
+        }
+      }
+    );
   };
 
   return (
