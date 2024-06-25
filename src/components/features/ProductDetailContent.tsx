@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { ProductOption } from "@/domain/ProductDomain";
 import { CartProductDomain } from "@/domain/CartDomain";
 import ProductService from "@/services/ProductService";
 import CartService from "@/services/CartService";
+import queryClient from "@/services/QueryClient";
 import { UseLoginContext } from "@/context/LoginContext";
 import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
@@ -44,13 +45,15 @@ const ProductDetailContent = () => {
     setCartProductInfo({ ...cartProductInfo, options: [option] });
   };
 
-  const addCartProduct = async () => {
-    CartService.setCartProduct(userId, cartProductInfo) //
-      .then(() => {
-        const toCartPage = confirm("장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?");
-        if (toCartPage) navigate("/cart");
-      });
-  };
+  interface AddMutationParams {
+    userId: string;
+    cartProductInfo: CartProductDomain;
+  }
+
+  const addCartProduct = useMutation({
+    mutationFn: ({ userId, cartProductInfo }: AddMutationParams) => CartService.setCartProduct(userId, cartProductInfo),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProducts"] })
+  });
 
   return (
     <>
@@ -88,7 +91,24 @@ const ProductDetailContent = () => {
               </div>
 
               <div className="mt-6">
-                <Button title="장바구니 담기" variant="contain" size="full" onClick={addCartProduct} />
+                <Button
+                  title="장바구니 담기"
+                  variant="contain"
+                  size="full"
+                  onClick={() => {
+                    addCartProduct.mutate(
+                      { userId, cartProductInfo },
+                      {
+                        onSuccess: () => {
+                          const toCartPage = confirm(
+                            "장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?"
+                          );
+                          if (toCartPage) navigate("/cart");
+                        }
+                      }
+                    );
+                  }}
+                />
               </div>
             </div>
           </div>

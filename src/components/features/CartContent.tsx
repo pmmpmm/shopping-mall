@@ -11,12 +11,12 @@ import Button from "@/components/ui/Button";
 const CartContent = () => {
   const { userId } = UseLoginContext();
 
-  const { data: cartProduct } = useQuery({
-    queryKey: ["cartProduct", userId],
+  const { data: cartProducts } = useQuery({
+    queryKey: ["cartProducts", userId],
     queryFn: CartService.getAllCartProduct
   });
 
-  const totalPrice = cartProduct
+  const totalPrice = cartProducts
     ?.map((product) => parseInt(product.price) * product.quantity)
     .reduce((acc, cur) => acc + cur, 0) as number;
 
@@ -27,9 +27,9 @@ const CartContent = () => {
       <ContentTitle title="장바구니" />
 
       <FieldFormBlock className="w-full p-8">
-        {cartProduct ? (
+        {cartProducts ? (
           <ul className="flex flex-col">
-            {cartProduct.map((item, idx) => (
+            {cartProducts.map((item, idx) => (
               <CartList key={`cartList-${idx}`} item={item} />
             ))}
           </ul>
@@ -40,28 +40,38 @@ const CartContent = () => {
             </span>
           </div>
         )}
-
-        <div className="mt-10 pt-8 border-t border-gray-200 border-solid">
-          <div className="flex flex-row justify-between items-center">
-            <div className="px-10 text-center">
-              <span>상품 총 금액</span>
-              <p className="text-xl font-semibold">{totalPrice}</p>
+        {!!cartProducts && (
+          <>
+            <div className="mt-10 pt-8 border-t border-gray-200 border-solid">
+              <div className="flex flex-row justify-between items-center">
+                <div className="px-10 text-center">
+                  <span>상품 총 금액</span>
+                  <p className="text-xl font-semibold">{totalPrice}</p>
+                </div>
+                <p>+</p>
+                <div className="px-10 text-center">
+                  <span>배송비</span>
+                  <p className="text-xl font-semibold">{deliveryCharge}</p>
+                </div>
+                <p>=</p>
+                <div className="px-10 text-center">
+                  <span>총 금액</span>
+                  <p className="text-xl font-semibold">{totalPrice + deliveryCharge}</p>
+                </div>
+              </div>
             </div>
-            <p>+</p>
-            <div className="px-10 text-center">
-              <span>배송비</span>
-              <p className="text-xl font-semibold">{deliveryCharge}</p>
-            </div>
-            <p>=</p>
-            <div className="px-10 text-center">
-              <span>총 금액</span>
-              <p className="text-xl font-semibold">{totalPrice + deliveryCharge}</p>
-            </div>
-          </div>
-        </div>
-        <FieldFormButtonArea>
-          <Button title="상품 주문 하기" variant="contain" size="full" />
-        </FieldFormButtonArea>
+            <FieldFormButtonArea>
+              <Button
+                title="상품 주문하기"
+                variant="contain"
+                size="full"
+                onClick={() => {
+                  alert("빠른 시일에 상품을 주문하실 수 있도록 하겠습니다. 감사합니다.");
+                }}
+              />
+            </FieldFormButtonArea>
+          </>
+        )}
       </FieldFormBlock>
     </ContentLayoutA>
   );
