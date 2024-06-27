@@ -1,13 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import ProductService from "@/services/ProductService";
+import useProducts from "@/hooks/useProducts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
-import ProductCard from "../ui/ProductCard";
+import ProductCard from "@/components/ui/ProductCard";
 
 const HomeContent = () => {
-  const { data: products } = useQuery({
-    queryKey: ["all-products"],
-    queryFn: ProductService.getAllProducts
-  });
+  const {
+    getAllProducts: { data: products }
+  } = useProducts();
+
   return (
     <>
       <div className="flex items-center justify-center w-full h-[360px] overflow-hidden mt-5">

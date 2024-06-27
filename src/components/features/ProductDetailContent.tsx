@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { ProductOption } from "@/domain/ProductDomain";
 import { CartProductDomain } from "@/domain/CartDomain";
-import ProductService from "@/services/ProductService";
+import useProducts from "@/hooks/useProducts";
 import CartService from "@/services/CartService";
 import queryClient from "@/services/QueryClient";
 import { UseLoginContext } from "@/context/LoginContext";
@@ -19,11 +19,9 @@ const ProductDetailContent = () => {
   const id = new URLSearchParams(search).get("id") as string;
   const { userId } = UseLoginContext();
 
-  const { data: product } = useQuery({
-    queryKey: ["product", id],
-    queryFn: ProductService.getProduct,
-    enabled: !!id
-  });
+  const {
+    getProduct: { data: product }
+  } = useProducts();
 
   const [cartProductInfo, setCartProductInfo] = useState<CartProductDomain>({
     id: id,
