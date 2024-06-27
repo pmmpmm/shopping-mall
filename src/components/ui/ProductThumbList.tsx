@@ -11,7 +11,7 @@ const ProductThumbList = ({ url, product }: ProductThumbListProps) => {
   return (
     <Link to={url} className="w-full">
       <div className="flex flex-row gap-4 items-center">
-        <div className="w-30 h-36 overflow-hidden">
+        <div className="w-[7.5rem] h-36 overflow-hidden">
           <img src={image} alt="" className="w-full h-full object-cover" />
         </div>
         <div className="py-1">

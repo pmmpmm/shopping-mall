@@ -1,13 +1,15 @@
 import { ref, child, set, get, remove } from "firebase/database";
 import { firebaseDb } from "@/services/FirebaseClient";
 import { ProductValueDomain } from "@/domain/ProductDomain";
+import { v4 as uuidv4 } from "uuid";
 
 type QueryKeyType = { queryKey: string[] };
 
 const setProduct = async (productInfo: ProductValueDomain) => {
   const { id, image, title, price, description, category, options } = productInfo;
-  return set(ref(firebaseDb, "products/" + id), {
-    id,
+  const productId = id === "" ? uuidv4() : id;
+  return set(ref(firebaseDb, "products/" + productId), {
+    id: productId,
     image,
     title,
     price,
