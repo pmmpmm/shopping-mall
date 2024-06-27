@@ -5,6 +5,7 @@ import AuthService from "@/services/AuthService";
 import UserService from "@/services/UserService";
 import { UserRole } from "@/domain/UserDomain";
 import Logo from "@/components/ui/Logo";
+import CartService from "@/services/CartService";
 
 const UtilityMenuBar = () => {
   return <em className="inline-block w-[1px] h-[10px] mx-3 bg-gray-300"></em>;
@@ -21,6 +22,11 @@ const Header = () => {
     staleTime: 1000 * 60 * 60
   });
 
+  const { data: cartProducts } = useQuery({
+    queryKey: ["cartProducts", userId],
+    queryFn: CartService.getAllCartProduct
+  });
+
   const handleLogout = () => {
     const logoutConfirm = confirm("로그아웃 하시겠습니까?");
     if (logoutConfirm) {
@@ -31,6 +37,11 @@ const Header = () => {
           navigate("/");
         });
     }
+  };
+
+  const cartProductCount = () => {
+    if (cartProducts === null) return 0;
+    return cartProducts?.length;
   };
 
   return (
@@ -56,7 +67,7 @@ const Header = () => {
             <Link to="/cart">
               <span>장바구니</span>
               <em className="inline-block min-w-4 ml-[4px] px-[3px] py-[2px] bg-red-600 leading-3 text-[10px] font-bold text-white text-center align-text-bottom rounded-full not-italic">
-                5
+                {cartProductCount()}
               </em>
             </Link>
             <UtilityMenuBar />

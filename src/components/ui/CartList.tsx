@@ -1,10 +1,10 @@
-import { UseLoginContext } from "@/context/LoginContext";
-import ProductThumbList from "@/components/ui/ProductThumbList";
-import { CartProductDomain } from "@/domain/CartDomain";
-import Button from "@/components/ui/Button";
-import CartService from "@/services/CartService";
 import { useMutation } from "@tanstack/react-query";
+import CartService from "@/services/CartService";
 import queryClient from "@/services/QueryClient";
+import { UseLoginContext } from "@/context/LoginContext";
+import { CartProductDomain } from "@/domain/CartDomain";
+import ProductThumbList from "@/components/ui/ProductThumbList";
+import Button from "@/components/ui/Button";
 
 const CartList = ({ item }: { item: CartProductDomain }) => {
   const { userId } = UseLoginContext();
@@ -22,16 +22,16 @@ const CartList = ({ item }: { item: CartProductDomain }) => {
   const handleMinus = useMutation({
     mutationFn: ({ userId, item }: UpdateMutationParams) =>
       CartService.setCartProduct(userId, { ...item, quantity: quantity - 1 }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProduct"] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProducts"] })
   });
   const handlePlus = useMutation({
     mutationFn: ({ userId, item }: UpdateMutationParams) =>
       CartService.setCartProduct(userId, { ...item, quantity: quantity + 1 }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProduct"] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProducts"] })
   });
   const handleDelete = useMutation({
     mutationFn: ({ userId, id }: DeleteMutationParams) => CartService.removeCartProduct(userId, id),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProduct"] })
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProducts"] })
   });
 
   return (
