@@ -42,7 +42,6 @@ const MypageContent = () => {
     if (currentPassword) {
       AuthService.deleteAccount(currentPassword) //
         .then((response) => {
-          console.log("out");
           if (typeof response === "string") {
             alert(response);
             return;
