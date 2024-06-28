@@ -4,6 +4,7 @@ import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
 import ProductManagementList from "@/components/ui/ProductManagementList";
 import Button from "@/components/ui/Button";
+import NoContent from "@/components/ui/NoContent";
 
 const ProductManagementContent = () => {
   const { deleteProduct } = useProducts();
@@ -32,11 +33,7 @@ const ProductManagementContent = () => {
               ))}
             </ul>
           ) : (
-            <div className="flex justify-center py-8">
-              <span className="text-lg font-medium">
-                <em className="not-italic text-[26px] align-top">😅</em> 등록된 상품이 없습니다.
-              </span>
-            </div>
+            <NoContent message="등록된 상품이 없습니다." />
           )}
         </div>
       </FieldFormBlock>
