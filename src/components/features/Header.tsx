@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
+import useCarts from "@/hooks/useCarts";
 import { UseLoginContext } from "@/context/LoginContext";
 import AuthService from "@/services/AuthService";
 import UserService from "@/services/UserService";
 import { UserRole } from "@/domain/UserDomain";
 import Logo from "@/components/ui/Logo";
-import CartService from "@/services/CartService";
 
 const UtilityMenuBar = () => {
   return <em className="inline-block w-[1px] h-[10px] mx-3 bg-gray-300"></em>;
@@ -22,10 +22,9 @@ const Header = () => {
     staleTime: 1000 * 60 * 60
   });
 
-  const { data: cartProducts } = useQuery({
-    queryKey: ["cartProducts", userId],
-    queryFn: CartService.getAllCartProduct
-  });
+  const {
+    getAllCartProduct: { data: cartProducts }
+  } = useCarts();
 
   const handleLogout = () => {
     const logoutConfirm = confirm("로그아웃 하시겠습니까?");

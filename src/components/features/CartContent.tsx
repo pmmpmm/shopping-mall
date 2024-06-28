@@ -1,6 +1,4 @@
-import { useQuery } from "@tanstack/react-query";
-import CartService from "@/services/CartService";
-import { UseLoginContext } from "@/context/LoginContext";
+import useCarts from "@/hooks/useCarts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import FieldFormBlock from "@/components/ui/FieldFormBlock";
@@ -9,12 +7,9 @@ import CartList from "@/components/ui/CartList";
 import Button from "@/components/ui/Button";
 
 const CartContent = () => {
-  const { userId } = UseLoginContext();
-
-  const { data: cartProducts } = useQuery({
-    queryKey: ["cartProducts", userId],
-    queryFn: CartService.getAllCartProduct
-  });
+  const {
+    getAllCartProduct: { data: cartProducts }
+  } = useCarts();
 
   const totalPrice = cartProducts
     ?.map((product) => parseInt(product.price) * product.quantity)

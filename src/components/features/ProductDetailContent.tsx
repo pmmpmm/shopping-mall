@@ -1,12 +1,9 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
 import { ProductOption } from "@/domain/ProductDomain";
 import { CartProductDomain } from "@/domain/CartDomain";
 import useProducts from "@/hooks/useProducts";
-import CartService from "@/services/CartService";
-import queryClient from "@/services/QueryClient";
-import { UseLoginContext } from "@/context/LoginContext";
+import useCarts from "@/hooks/useCarts";
 import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import FormGroup from "@/components/ui/FormGroup";
@@ -17,7 +14,7 @@ const ProductDetailContent = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const id = new URLSearchParams(search).get("id") as string;
-  const { userId } = UseLoginContext();
+  const { addAndUpdateCartProduct } = useCarts();
 
   const {
     getProduct: { data: product }
@@ -43,15 +40,17 @@ const ProductDetailContent = () => {
     setCartProductInfo({ ...cartProductInfo, options: [option] });
   };
 
-  interface AddMutationParams {
-    userId: string;
-    cartProductInfo: CartProductDomain;
-  }
-
-  const addCartProduct = useMutation({
-    mutationFn: ({ userId, cartProductInfo }: AddMutationParams) => CartService.setCartProduct(userId, cartProductInfo),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["cartProducts"] })
-  });
+  const addCartProduct = () => {
+    addAndUpdateCartProduct.mutate(
+      { cartProduct: cartProductInfo },
+      {
+        onSuccess: () => {
+          const goToCartPage = confirm("장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?");
+          if (goToCartPage) navigate("/cart");
+        }
+      }
+    );
+  };
 
   return (
     <>
@@ -89,24 +88,7 @@ const ProductDetailContent = () => {
               </div>
 
               <div className="mt-6">
-                <Button
-                  title="장바구니 담기"
-                  variant="contain"
-                  size="full"
-                  onClick={() => {
-                    addCartProduct.mutate(
-                      { userId, cartProductInfo },
-                      {
-                        onSuccess: () => {
-                          const toCartPage = confirm(
-                            "장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?"
-                          );
-                          if (toCartPage) navigate("/cart");
-                        }
-                      }
-                    );
-                  }}
-                />
+                <Button title="장바구니 담기" variant="contain" size="full" onClick={addCartProduct} />
               </div>
             </div>
           </div>
