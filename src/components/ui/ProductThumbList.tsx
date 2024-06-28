@@ -3,11 +3,12 @@ import { ProductOption } from "@/domain/ProductDomain";
 
 interface ProductThumbListProps {
   url: string;
-  product: { id: string; image: string; title: string; price: string; category?: string; options: ProductOption[] };
+  product: { id: string; image: string; title: string; price: string; category?: string; options?: ProductOption[] };
 }
 
 const ProductThumbList = ({ url, product }: ProductThumbListProps) => {
   const { image, title, price, category, options } = product;
+
   return (
     <Link to={url} className="w-full">
       <div className="flex flex-row gap-4 items-center">
@@ -22,9 +23,11 @@ const ProductThumbList = ({ url, product }: ProductThumbListProps) => {
                 카테고리: <span className="font-medium">{category}</span>
               </p>
             )}
-            <p>
-              옵션: <span className="font-medium">{options.map((option) => option.opt).join(", ")}</span>
-            </p>
+            {options && (
+              <p>
+                옵션: <span className="font-medium">{options.map((option) => option.opt).join(", ")}</span>
+              </p>
+            )}
             <p>
               금액: <span className="font-medium">₩{price}</span>
             </p>

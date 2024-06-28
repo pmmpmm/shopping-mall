@@ -4,7 +4,7 @@ import { ProductOption } from "@/domain/ProductDomain";
 import { CartProductDomain } from "@/domain/CartDomain";
 import useProducts from "@/hooks/useProducts";
 import useCarts from "@/hooks/useCarts";
-import { optionSizeList } from "@/common/productOption";
+import { optionList as optionListSet } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import FormGroup from "@/components/ui/FormGroup";
 import Radio from "@/components/ui/Radio";
@@ -25,6 +25,7 @@ const ProductDetailContent = () => {
     image: "",
     title: "",
     price: "",
+    category: "",
     options: [],
     quantity: 1
   });
@@ -36,8 +37,11 @@ const ProductDetailContent = () => {
   }, [product]);
 
   const handleOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const option = optionSizeList.find((item) => item.opt === e.target.value) as ProductOption;
-    setCartProductInfo({ ...cartProductInfo, options: [option] });
+    if (product) {
+      const optionList = optionListSet(product.category) as ProductOption[];
+      const option = optionList.find((item) => item.opt === e.target.value) as ProductOption;
+      setCartProductInfo({ ...cartProductInfo, options: [option] });
+    }
   };
 
   const addCartProduct = () => {
@@ -51,7 +55,6 @@ const ProductDetailContent = () => {
       }
     );
   };
-
   return (
     <>
       {product && (
@@ -70,22 +73,25 @@ const ProductDetailContent = () => {
                 <p className="mt-4 text-base">{product.description}</p>
               </div>
 
-              <hr className="border-gray-200" />
-
-              <div className="flex flex-row items-center gap-4 mt-5">
-                <p className="leading-none">사이즈</p>
-                <FormGroup direction="row">
-                  {product.options.map((option, idx) => (
-                    <Radio
-                      key={`option-${idx}`}
-                      id={option.opt}
-                      value={option.opt}
-                      name="option"
-                      onChange={handleOption}
-                    />
-                  ))}
-                </FormGroup>
-              </div>
+              {product.options && (
+                <>
+                  <hr className="border-gray-200" />
+                  <div className="flex flex-row items-center gap-4 mt-5">
+                    <p className="leading-none">사이즈</p>
+                    <FormGroup direction="row">
+                      {product.options.map((option, idx) => (
+                        <Radio
+                          key={`option-${idx}`}
+                          id={option.opt}
+                          value={option.opt}
+                          name="option"
+                          onChange={handleOption}
+                        />
+                      ))}
+                    </FormGroup>
+                  </div>
+                </>
+              )}
 
               <div className="mt-6">
                 <Button title="장바구니 담기" variant="contain" size="full" onClick={addCartProduct} />

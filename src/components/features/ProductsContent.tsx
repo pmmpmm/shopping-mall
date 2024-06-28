@@ -14,8 +14,6 @@ const ProductsContent = () => {
     getAllProducts: { data: products }
   } = useProducts();
 
-  console.log("products", products);
-
   return (
     <ContentLayoutA>
       <ContentTitle title={category} />

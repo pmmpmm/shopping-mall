@@ -5,6 +5,7 @@ export type CartProductDomain = {
   image: string;
   title: string;
   price: string;
-  options: ProductOption[];
+  category: string;
+  options?: ProductOption[];
   quantity: number;
 };
