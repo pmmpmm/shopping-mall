@@ -3,11 +3,11 @@ import { useNavigate } from "react-router-dom";
 import AuthService from "@/services/AuthService";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ContentBlockA from "@/components/ui/ContentBlockA";
 import FieldForm from "@/components/ui/FieldForm";
 import InputField from "@/components/ui/InputField";
 import Button from "@/components/ui/Button";
-import FieldFormButtonArea from "../ui/FieldFormButtonArea";
+import ContentBottomA from "@/components/ui/ContentBottomA";
 
 const SignupContent = () => {
   const naviget = useNavigate();
@@ -33,7 +33,7 @@ const SignupContent = () => {
   return (
     <ContentLayoutA>
       <ContentTitle title="회원가입" />
-      <FieldFormBlock className="w-2/4">
+      <ContentBlockA className="w-2/4">
         <FieldForm>
           <InputField
             label="이름"
@@ -61,10 +61,10 @@ const SignupContent = () => {
           />
         </FieldForm>
 
-        <FieldFormButtonArea>
+        <ContentBottomA>
           <Button title="회원가입" variant="contain" size="full" onClick={handleSignup} />
-        </FieldFormButtonArea>
-      </FieldFormBlock>
+        </ContentBottomA>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };

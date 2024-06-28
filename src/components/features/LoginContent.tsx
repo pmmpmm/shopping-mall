@@ -4,10 +4,10 @@ import { UseLoginContext } from "@/context/LoginContext";
 import AuthService from "@/services/AuthService";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ContentBlockA from "@/components/ui/ContentBlockA";
 import FieldForm from "@/components/ui/FieldForm";
 import InputField from "@/components/ui/InputField";
-import FieldFormButtonArea from "@/components/ui/FieldFormButtonArea";
+import ContentBottomA from "@/components/ui/ContentBottomA";
 import Button from "@/components/ui/Button";
 
 const LoginContent = () => {
@@ -34,7 +34,7 @@ const LoginContent = () => {
   return (
     <ContentLayoutA>
       <ContentTitle title="로그인" />
-      <FieldFormBlock className="w-2/4">
+      <ContentBlockA className="w-2/4">
         <FieldForm>
           <InputField
             label="이메일"
@@ -53,11 +53,11 @@ const LoginContent = () => {
             }}
           />
         </FieldForm>
-        <FieldFormButtonArea>
+        <ContentBottomA>
           <Button title="회원가입" variant="outline" size="full" href="/signup" />
           <Button title="로그인" variant="contain" size="full" onClick={handleLogin} />
-        </FieldFormButtonArea>
-      </FieldFormBlock>
+        </ContentBottomA>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };
