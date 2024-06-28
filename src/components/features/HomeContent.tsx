@@ -23,7 +23,7 @@ const HomeContent = () => {
         </div>
       </div>
       <ContentLayoutA>
-        <ul className="grid grid-cols-4 gap-x-1.5 gap-y-7">
+        <ul className="grid grid-cols-4 gap-x-2 gap-y-14">
           {products?.map((product, idx) => (
             <li key={`product-${idx}`}>
               <ProductCard id={product.id} image={product.image} title={product.title} price={product.price} />

@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 import CloudinaryService from "@/services/CloudinaryService";
 import useProducts from "@/hooks/useProducts";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
@@ -21,7 +20,7 @@ const CreateProductContent = () => {
   const navigate = useNavigate();
 
   const [productInfo, setProductInfo] = useState<ProductValueDomain>({
-    id: uuidv4(),
+    id: "",
     image: "",
     title: "",
     price: "",
@@ -68,7 +67,9 @@ const CreateProductContent = () => {
   const [success, setSuccess] = useState(false);
   const createNewProduct = () => {
     for (const key in productInfo) {
+      if (key === "id") continue;
       const value = productInfo[key];
+
       if (value === "" || value.length === 0) {
         alert("빈 칸을 모두 입력 해주세요.");
         return;
