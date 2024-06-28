@@ -1,10 +1,10 @@
 import React from "react";
 
-interface FieldFormButtonAreaProps {
+interface ContentBottomAProps {
   children: React.ReactNode;
 }
 
-const FieldFormButtonArea = ({ children }: FieldFormButtonAreaProps) => {
+const ContentBottomA = ({ children }: ContentBottomAProps) => {
   let style = "mt-10 ";
 
   if ((children as React.ReactNode[]).length > 1) {
@@ -14,4 +14,4 @@ const FieldFormButtonArea = ({ children }: FieldFormButtonAreaProps) => {
   return <div className={style}>{children}</div>;
 };
 
-export default FieldFormButtonArea;
+export default ContentBottomA;

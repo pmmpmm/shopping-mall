@@ -6,10 +6,10 @@ import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
 import { optionSizeList } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ContentBlockA from "@/components/ui/ContentBlockA";
 import FieldForm from "@/components/ui/FieldForm";
 import FormGroup from "@/components/ui/FormGroup";
-import FieldFormButtonArea from "@/components/ui/FieldFormButtonArea";
+import ContentBottomA from "@/components/ui/ContentBottomA";
 import InputField from "@/components/ui/InputField";
 import TextareaField from "@/components/ui/TextareaField";
 import Radio from "@/components/ui/Radio";
@@ -107,7 +107,7 @@ const UpdateProductContent = () => {
     <ContentLayoutA>
       <ContentTitle title="상품 수정" />
 
-      <FieldFormBlock className="w-full">
+      <ContentBlockA className="w-full">
         {success && (
           <div className="flex justify-center pb-12">
             <span className="text-lg font-medium">
@@ -219,7 +219,7 @@ const UpdateProductContent = () => {
           )}
         </div>
 
-        <FieldFormButtonArea>
+        <ContentBottomA>
           <Button title="목록으로 돌아가기" variant="outline" size="large" href="/product-management" />
           <Button
             title={isUploading ? "상품 수정 중 ...." : "상품 수정"}
@@ -227,8 +227,8 @@ const UpdateProductContent = () => {
             size="full"
             onClick={updateProduct}
           />
-        </FieldFormButtonArea>
-      </FieldFormBlock>
+        </ContentBottomA>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };

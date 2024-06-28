@@ -1,8 +1,8 @@
 import useCarts from "@/hooks/useCarts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
-import FieldFormButtonArea from "@/components/ui/FieldFormButtonArea";
+import ContentBlockA from "@/components/ui/ContentBlockA";
+import ContentBottomA from "@/components/ui/ContentBottomA";
 import CartList from "@/components/ui/CartList";
 import Button from "@/components/ui/Button";
 import NoContent from "@/components/ui/NoContent";
@@ -22,7 +22,7 @@ const CartContent = () => {
     <ContentLayoutA>
       <ContentTitle title="장바구니" />
 
-      <FieldFormBlock className="w-full p-8">
+      <ContentBlockA className="w-full p-8">
         {cartProducts ? (
           <ul className="flex flex-col">
             {cartProducts.map((item, idx) => (
@@ -52,7 +52,7 @@ const CartContent = () => {
                 </div>
               </div>
             </div>
-            <FieldFormButtonArea>
+            <ContentBottomA>
               <Button
                 title="상품 주문하기"
                 variant="contain"
@@ -61,10 +61,10 @@ const CartContent = () => {
                   alert("빠른 시일에 상품을 주문하실 수 있도록 하겠습니다. 감사합니다.");
                 }}
               />
-            </FieldFormButtonArea>
+            </ContentBottomA>
           </>
         )}
-      </FieldFormBlock>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };

@@ -1,7 +1,7 @@
 import useProducts from "@/hooks/useProducts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ContentBlockA from "@/components/ui/ContentBlockA";
 import ProductManagementList from "@/components/ui/ProductManagementList";
 import Button from "@/components/ui/Button";
 import NoContent from "@/components/ui/NoContent";
@@ -21,7 +21,7 @@ const ProductManagementContent = () => {
   return (
     <ContentLayoutA>
       <ContentTitle title="상품 관리" />
-      <FieldFormBlock className="w-full p-8">
+      <ContentBlockA className="w-full p-8">
         <div className="flex justify-end">
           <Button title="상품 등록" variant="contain" size="small" href="/product-management/create" />
         </div>
@@ -36,7 +36,7 @@ const ProductManagementContent = () => {
             <NoContent message="등록된 상품이 없습니다." />
           )}
         </div>
-      </FieldFormBlock>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };

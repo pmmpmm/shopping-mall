@@ -5,10 +5,10 @@ import useUser from "@/hooks/useUser";
 import { UseLoginContext } from "@/context/LoginContext";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
-import FieldFormBlock from "@/components/ui/FieldFormBlock";
+import ContentBlockA from "@/components/ui/ContentBlockA";
 import FieldForm from "@/components/ui/FieldForm";
 import InputField from "@/components/ui/InputField";
-import FieldFormButtonArea from "@/components/ui/FieldFormButtonArea";
+import ContentBottomA from "@/components/ui/ContentBottomA";
 import Button from "@/components/ui/Button";
 
 const MypageContent = () => {
@@ -56,7 +56,7 @@ const MypageContent = () => {
   return (
     <ContentLayoutA>
       <ContentTitle title="마이페이지" />
-      <FieldFormBlock className="w-2/4">
+      <ContentBlockA className="w-2/4">
         <FieldForm>
           <InputField label="이름" value={userInfo?.username || ""} name="username" type="text" disabled />
           <InputField label="이메일" value={userInfo?.email || ""} name="email" type="email" disabled />
@@ -77,11 +77,11 @@ const MypageContent = () => {
             }}
           />
         </FieldForm>
-        <FieldFormButtonArea>
+        <ContentBottomA>
           <Button title="회원 탈퇴" variant="outline" size="large" onClick={handleDeleteAccount} />
           <Button title="회원정보 수정" variant="contain" size="full" onClick={handleEditUserInfo} />
-        </FieldFormButtonArea>
-      </FieldFormBlock>
+        </ContentBottomA>
+      </ContentBlockA>
     </ContentLayoutA>
   );
 };
