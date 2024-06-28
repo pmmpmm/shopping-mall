@@ -1,9 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
+import useUser from "@/hooks/useUser";
 import useCarts from "@/hooks/useCarts";
 import { UseLoginContext } from "@/context/LoginContext";
 import AuthService from "@/services/AuthService";
-import UserService from "@/services/UserService";
 import { UserRole } from "@/domain/UserDomain";
 import Logo from "@/components/ui/Logo";
 
@@ -13,14 +12,11 @@ const UtilityMenuBar = () => {
 
 const Header = () => {
   const navigate = useNavigate();
-  const { userId, isLogin, setIsLogin } = UseLoginContext();
+  const { isLogin, setIsLogin } = UseLoginContext();
 
-  const { data: userStutes } = useQuery({
-    queryKey: ["userInfo", userId],
-    queryFn: UserService.getUserInfo,
-    enabled: isLogin,
-    staleTime: 1000 * 60 * 60
-  });
+  const {
+    getUserInfo: { data: userStutes }
+  } = useUser();
 
   const {
     getAllCartProduct: { data: cartProducts }
@@ -29,7 +25,7 @@ const Header = () => {
   const handleLogout = () => {
     const logoutConfirm = confirm("로그아웃 하시겠습니까?");
     if (logoutConfirm) {
-      AuthService.logout("userInfo") //
+      AuthService.logout() //
         .then(() => {
           setIsLogin(false);
           alert("로그아웃되었습니다. 이용해 주셔서 감사합니다.");
@@ -39,7 +35,7 @@ const Header = () => {
   };
 
   const cartProductCount = () => {
-    if (cartProducts === null) return 0;
+    if (!cartProducts) return 0;
     return cartProducts?.length;
   };
 

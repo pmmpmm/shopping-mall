@@ -65,12 +65,15 @@ const login = async (email: string, password: string) => {
     });
 };
 
-const logout = async (queryKey: string) => {
+const logout = async () => {
   return signOut(auth) //
     .then(() => {
       localStorage.removeItem(import.meta.env.VITE_FIREBASE_REFRESH_TOKEN);
       localStorage.removeItem(import.meta.env.VITE_USER_ROLE);
-      queryClient.removeQueries({ queryKey: [queryKey] });
+      queryClient.removeQueries({ queryKey: ["userInfo"] });
+    })
+    .then(() => {
+      window.location.reload();
     });
 };
 
@@ -98,20 +101,19 @@ const changePassword = async (currentPassword: string, newPassword: string) => {
   }
 };
 
-const deleteAccount = async (currentPassword: string, queryKey: string) => {
+const deleteAccount = async (currentPassword: string) => {
   const user = auth.currentUser;
   if (user) {
     const credential = EmailAuthProvider.credential(user.email as string, currentPassword);
 
     return reauthenticateWithCredential(user, credential) //
       .then(async (result) => {
+        logout();
+
         remove(ref(firebaseDb, "users/" + result.user.uid));
+        remove(ref(firebaseDb, "carts/" + result.user.uid));
 
         return deleteUser(result.user) //
-          .then(() => {
-            // remove(),set()등 실행 안됨
-            queryClient.removeQueries({ queryKey: [queryKey] });
-          })
           .catch((error) => console.log(error));
       })
       .catch((error) => {

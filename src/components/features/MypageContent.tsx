@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useQuery } from "@tanstack/react-query";
-import UserService from "@/services/UserService";
 import AuthService from "@/services/AuthService";
+import useUser from "@/hooks/useUser";
 import { UseLoginContext } from "@/context/LoginContext";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
@@ -14,12 +13,11 @@ import Button from "@/components/ui/Button";
 
 const MypageContent = () => {
   const navigate = useNavigate();
-  const { userId, setIsLogin } = UseLoginContext();
+  const { setIsLogin } = UseLoginContext();
 
-  const { data: userInfo } = useQuery({
-    queryKey: ["userInfo", userId],
-    queryFn: UserService.getUserInfo
-  });
+  const {
+    getUserInfo: { data: userInfo }
+  } = useUser();
 
   const [password, setPassword] = useState({
     current: "",
@@ -42,7 +40,7 @@ const MypageContent = () => {
     const currentPassword = prompt("탈퇴를 하시겠습니까?\n회원탈퇴를 위해서는 비밀번호를 입력해주셔야 합니다.");
 
     if (currentPassword) {
-      AuthService.deleteAccount(currentPassword, "userInfo") //
+      AuthService.deleteAccount(currentPassword) //
         .then((response) => {
           if (typeof response === "string") {
             alert(response);
