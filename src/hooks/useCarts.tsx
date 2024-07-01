@@ -13,8 +13,28 @@ const useCarts = () => {
     enabled: !!userId
   });
 
-  const addAndUpdateCartProduct = useMutation({
-    mutationFn: (
+  const addCartProduct = useMutation({
+    mutationFn: async (
+      { cartProduct }: { cartProduct: CartProductDomain } //
+    ) => {
+      const { data } = getAllCartProduct;
+
+      if (data && data.some((item) => item.id === cartProduct.id)) {
+        const confirmAddCart = confirm("동일한 상품이 장바구니에 있습니다. \n장바구니에 상품을 덮어씌울까요?");
+        if (confirmAddCart) {
+          return CartService.setCartProduct(userId, cartProduct);
+        } else {
+          return null;
+        }
+      }
+
+      return CartService.setCartProduct(userId, cartProduct);
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["all-cartProducts", userId] })
+  });
+
+  const updateCartProduct = useMutation({
+    mutationFn: async (
       { cartProduct }: { cartProduct: CartProductDomain } //
     ) => CartService.setCartProduct(userId, cartProduct),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["all-cartProducts", userId] })
@@ -27,7 +47,7 @@ const useCarts = () => {
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["all-cartProducts", userId] })
   });
 
-  return { getAllCartProduct, addAndUpdateCartProduct, removeCartProduct };
+  return { getAllCartProduct, addCartProduct, updateCartProduct, removeCartProduct };
 };
 
 export default useCarts;

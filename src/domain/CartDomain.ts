@@ -6,6 +6,6 @@ export type CartProductDomain = {
   title: string;
   price: string;
   category: string;
-  options?: ProductOption[];
+  options: ProductOption[];
   quantity: number;
 };
