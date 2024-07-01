@@ -69,7 +69,7 @@ const Header = () => {
 
             {userStutes.role === UserRole.ADMIN && (
               <>
-                <Link to="/product-management">상품 관리</Link>
+                <Link to="/product-management?category=all">상품 관리</Link>
                 <UtilityMenuBar />
               </>
             )}
