@@ -4,20 +4,23 @@ import Button from "@/components/ui/Button";
 import useCarts from "@/hooks/useCarts";
 
 const CartList = ({ item }: { item: CartProductDomain }) => {
-  const { id, quantity } = item;
+  const { id, options, quantity } = item;
 
-  const { addAndUpdateCartProduct, removeCartProduct } = useCarts();
+  const { updateCartProduct, removeCartProduct } = useCarts();
 
   const handleMinus = () => {
     if (quantity < 2) return;
-    addAndUpdateCartProduct.mutate({ cartProduct: { ...item, quantity: quantity - 1 } });
+    updateCartProduct.mutate({
+      cartProduct: { ...item, options: options === undefined ? [] : options, quantity: quantity - 1 }
+    });
   };
 
   const handlePlus = () => {
-    addAndUpdateCartProduct.mutate({
-      cartProduct: { ...item, options: [], quantity: quantity + 1 }
+    updateCartProduct.mutate({
+      cartProduct: { ...item, options: options === undefined ? [] : options, quantity: quantity + 1 }
     });
   };
+
   const handleDelete = () => {
     const deleteConfirm = confirm("장바구니의 상품을 삭제하시겠습니까?");
     if (deleteConfirm) removeCartProduct.mutate({ id });

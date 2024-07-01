@@ -14,7 +14,7 @@ const ProductDetailContent = () => {
   const navigate = useNavigate();
   const { search } = useLocation();
   const id = new URLSearchParams(search).get("id") as string;
-  const { addAndUpdateCartProduct } = useCarts();
+  const { addCartProduct: addCartProductItem } = useCarts();
 
   const {
     getProduct: { data: product }
@@ -32,23 +32,35 @@ const ProductDetailContent = () => {
 
   useEffect(() => {
     if (product) {
-      setCartProductInfo({ ...cartProductInfo, image: product.image, title: product.title, price: product.price });
+      setCartProductInfo({
+        ...cartProductInfo,
+        image: product.image,
+        title: product.title,
+        price: product.price,
+        category: product.category
+      });
     }
   }, [product]);
 
   const handleOption = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (product) {
-      const optionList = optionListSet(product.category) as ProductOption[];
+    if (cartProductInfo) {
+      const optionList = optionListSet(cartProductInfo.category) as ProductOption[];
       const option = optionList.find((item) => item.opt === e.target.value) as ProductOption;
       setCartProductInfo({ ...cartProductInfo, options: [option] });
     }
   };
 
   const addCartProduct = () => {
-    addAndUpdateCartProduct.mutate(
+    if (product && !!product.options && cartProductInfo.options.length <= 0) {
+      alert("상품의 옵션을 선택해 주세요.");
+      return;
+    }
+
+    addCartProductItem.mutate(
       { cartProduct: cartProductInfo },
       {
-        onSuccess: () => {
+        onSuccess: (data) => {
+          if (data === null) return;
           const goToCartPage = confirm("장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?");
           if (goToCartPage) navigate("/cart");
         }
