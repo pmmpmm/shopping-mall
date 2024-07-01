@@ -3,7 +3,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useProducts from "@/hooks/useProducts";
 import CloudinaryService from "@/services/CloudinaryService";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
-import { optionSizeList } from "@/common/productOption";
+import { noOptionCategotys, optionList as optionListSet } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import ContentTitle from "@/components/ui/ContentTitle";
 import ContentBlockA from "@/components/ui/ContentBlockA";
@@ -55,14 +55,15 @@ const UpdateProductContent = () => {
 
   // 카테고리 필드
   const handleCategories = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setProductInfo({ ...productInfo, category: e.target.value });
+    setProductInfo({ ...productInfo, category: e.target.value, options: [] });
   };
 
   // 옵션 필드
+  const optionList = optionListSet(productInfo.category) as ProductOption[];
   const handleOptions = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.id;
     const isChecked = e.target.checked;
-    const checkedOpt = optionSizeList.find((item) => item.opt === value) as ProductOption;
+    const checkedOpt = optionList.find((item) => item.opt === value) as ProductOption;
 
     if (isChecked) {
       setProductInfo({ ...productInfo, options: [...productInfo.options, checkedOpt] });
@@ -78,6 +79,9 @@ const UpdateProductContent = () => {
   const updateProduct = () => {
     for (const key in productInfo) {
       const value = productInfo[key];
+      if (key === "id") continue;
+      if (noOptionCategotys.some((noOption) => noOption == productInfo["category"])) continue;
+
       if (value === "" || value.length === 0) {
         alert("빈 칸을 모두 입력 해주세요.");
         return;
@@ -85,7 +89,8 @@ const UpdateProductContent = () => {
     }
 
     setIsUploading(true);
-    const optionsSort = productInfo.options.sort((a, b) => a.no - b.no);
+    const optionsSort = options ? options.sort((a, b) => a.no - b.no) : [];
+
     setProduct.mutate(
       { product: { ...productInfo, options: optionsSort } },
       {
@@ -168,43 +173,20 @@ const UpdateProductContent = () => {
               />
             </FormGroup>
 
-            <FormGroup direction="row" label="옵션">
-              <CheckBox
-                id="XS"
-                value="XS"
-                name="option"
-                onChange={handleOptions}
-                checked={options.some((option) => option.opt === "XS")}
-              />
-              <CheckBox
-                id="S"
-                value="S"
-                name="option"
-                onChange={handleOptions}
-                checked={options.some((option) => option.opt === "S")}
-              />
-              <CheckBox
-                id="M"
-                value="M"
-                name="option"
-                onChange={handleOptions}
-                checked={options.some((option) => option.opt === "M")}
-              />
-              <CheckBox
-                id="L"
-                value="L"
-                name="option"
-                onChange={handleOptions}
-                checked={options.some((option) => option.opt === "L")}
-              />
-              <CheckBox
-                id="XL"
-                value="XL"
-                name="option"
-                onChange={handleOptions}
-                checked={options.some((option) => option.opt === "XL")}
-              />
-            </FormGroup>
+            {!noOptionCategotys.some((noOption) => noOption == category) && (
+              <FormGroup direction="row" label="옵션">
+                {optionListSet(productInfo.category).map((sizeOpt, idx) => (
+                  <CheckBox
+                    key={`sizeOpt-${idx}`}
+                    id={sizeOpt.opt}
+                    value={sizeOpt.opt}
+                    name="option"
+                    onChange={handleOptions}
+                    checked={options.some((option) => option.opt === sizeOpt.opt)}
+                  />
+                ))}
+              </FormGroup>
+            )}
           </FieldForm>
 
           {!imageFile && !!product && (
