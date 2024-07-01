@@ -1,5 +1,6 @@
 import useProducts from "@/hooks/useProducts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
+import CategoryNav from "@/components/features/CategoryNav";
 import ContentTitle from "@/components/ui/ContentTitle";
 import ContentBlockA from "@/components/ui/ContentBlockA";
 import ProductManagementList from "@/components/ui/ProductManagementList";
@@ -25,8 +26,11 @@ const ProductManagementContent = () => {
         <div className="flex justify-end">
           <Button title="상품 등록" variant="contain" size="small" href="/product-management/create" />
         </div>
-        <div>
-          {products ? (
+
+        <CategoryNav path="/product-management?category" />
+
+        <div className="mt-8">
+          {products && products.length > 0 ? (
             <ul className="flex flex-col">
               {products.map((item, idx) => (
                 <ProductManagementList key={`item-${idx}`} item={item} onClick={() => handleDeleteProduct(item.id)} />

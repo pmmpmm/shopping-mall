@@ -10,12 +10,12 @@ interface LayoutAProps {
 const LayoutA = ({ children }: LayoutAProps) => {
   return (
     <>
-      <WrapperLayoutA>
+      <WrapperLayoutA className="pb-5">
         <Header />
       </WrapperLayoutA>
 
       <WrapperLayoutA>
-        <CategoryNav />
+        <CategoryNav path="/products?category" />
       </WrapperLayoutA>
 
       <WrapperLayoutA>{children}</WrapperLayoutA>

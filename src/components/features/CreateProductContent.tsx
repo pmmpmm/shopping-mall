@@ -79,7 +79,8 @@ const CreateProductContent = () => {
     }
 
     setIsUploading(true);
-    const optionsSort = options ? options.sort((a, b) => a.no - b.no) : [];
+    const optionsSort = options.length > 0 ? options.sort((a, b) => a.no - b.no) : [];
+
     setProduct.mutate(
       { product: { ...productInfo, options: optionsSort } },
       {
