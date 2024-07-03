@@ -20,6 +20,15 @@ const LoginContent = () => {
   const { email, password } = inputValue;
 
   const handleLogin = () => {
+    if (inputValue.email === "") {
+      alert("이메일을 입력해주세요.");
+      return;
+    }
+    if (inputValue.password === "") {
+      alert("비밀번호를 입력해주세요.");
+      return;
+    }
+
     AuthService.login(email, password) //
       .then((response) => {
         if (typeof response === "string") {
@@ -31,6 +40,10 @@ const LoginContent = () => {
       });
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") handleLogin();
+  };
+
   return (
     <ContentLayoutA>
       <ContentTitle title="로그인" />
@@ -40,6 +53,7 @@ const LoginContent = () => {
             label="이메일"
             name="email"
             type="email"
+            onKeyDown={handleKeyPress}
             setOnChange={(e) => {
               setInputValue({ ...inputValue, email: e.target.value });
             }}
@@ -48,6 +62,7 @@ const LoginContent = () => {
             label="비밀번호"
             name="password"
             type="password"
+            onKeyDown={handleKeyPress}
             setOnChange={(e) => {
               setInputValue({ ...inputValue, password: e.target.value });
             }}
