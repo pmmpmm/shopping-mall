@@ -5,6 +5,7 @@ import CloudinaryService from "@/services/CloudinaryService";
 import { ProductOption, ProductValueDomain } from "@/domain/ProductDomain";
 import { noOptionCategotys, optionList as optionListSet } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
+import MessageContent from "@/components/features/MessageContent";
 import ContentTitle from "@/components/ui/ContentTitle";
 import ContentBlockA from "@/components/ui/ContentBlockA";
 import FieldForm from "@/components/ui/FieldForm";
@@ -22,12 +23,12 @@ const UpdateProductContent = () => {
   const id = new URLSearchParams(search).get("id") as string;
 
   const {
-    getProduct: { data: product }
+    getProduct: { isLoading, isError, data: oldProduct }
   } = useProducts();
 
   useEffect(() => {
-    if (product) setProductInfo({ ...product });
-  }, [product]);
+    if (oldProduct) setProductInfo({ ...oldProduct });
+  }, [oldProduct]);
 
   const [productInfo, setProductInfo] = useState<ProductValueDomain>({
     id: id,
@@ -113,6 +114,9 @@ const UpdateProductContent = () => {
       <ContentTitle title="상품 수정" />
 
       <ContentBlockA className="w-full">
+        {isLoading && <MessageContent type="loading" height="h-[640px]" />}
+        {isError && <MessageContent type="error" height="h-[640px]" />}
+
         {success && (
           <div className="flex justify-center pb-12">
             <span className="text-lg font-medium">
@@ -121,95 +125,99 @@ const UpdateProductContent = () => {
           </div>
         )}
 
-        <div className="flex gap-x-10 w-full">
-          <FieldForm>
-            <InputField type="file" label="상품 이미지" accept="image/*" name="image" onChange={handleTextfields} />
-            <InputField type="text" label="상품명" value={title} name="title" onChange={handleTextfields} />
-            <InputField type="number" label="가격" value={price} name="price" onChange={handleTextfields} />
-            <TextareaField
-              label="상품 설명"
-              value={description}
-              name="description"
-              cols={10}
-              rows={3}
-              onChange={handleTextfields}
-            />
+        {!!oldProduct && (
+          <>
+            <div className="flex gap-x-10 w-full">
+              <FieldForm>
+                <InputField type="file" label="상품 이미지" accept="image/*" name="image" onChange={handleTextfields} />
+                <InputField type="text" label="상품명" value={title} name="title" onChange={handleTextfields} />
+                <InputField type="number" label="가격" value={price} name="price" onChange={handleTextfields} />
+                <TextareaField
+                  label="상품 설명"
+                  value={description}
+                  name="description"
+                  cols={10}
+                  rows={3}
+                  onChange={handleTextfields}
+                />
 
-            <FormGroup direction="row" label="카테고리">
-              <Radio
-                id="top"
-                value="상의"
-                name="category"
-                onChange={handleCategories}
-                checked={"상의" === category ? true : false}
-              />
-              <Radio
-                id="bottom"
-                value="하의"
-                name="category"
-                onChange={handleCategories}
-                checked={"하의" === category ? true : false}
-              />
-              <Radio
-                id="dress"
-                value="원피스"
-                name="category"
-                onChange={handleCategories}
-                checked={"원피스" === category ? true : false}
-              />
-              <Radio
-                id="shoes"
-                value="신발"
-                name="category"
-                onChange={handleCategories}
-                checked={"신발" === category ? true : false}
-              />
-              <Radio
-                id="bag"
-                value="가방"
-                name="category"
-                onChange={handleCategories}
-                checked={"가방" === category ? true : false}
-              />
-            </FormGroup>
-
-            {!noOptionCategotys.some((noOption) => noOption == category) && (
-              <FormGroup direction="row" label="옵션">
-                {optionListSet(productInfo.category).map((sizeOpt, idx) => (
-                  <CheckBox
-                    key={`sizeOpt-${idx}`}
-                    id={sizeOpt.opt}
-                    value={sizeOpt.opt}
-                    name="option"
-                    onChange={handleOptions}
-                    checked={options.some((option) => option.opt === sizeOpt.opt)}
+                <FormGroup direction="row" label="카테고리">
+                  <Radio
+                    id="top"
+                    value="상의"
+                    name="category"
+                    onChange={handleCategories}
+                    checked={"상의" === category ? true : false}
                   />
-                ))}
-              </FormGroup>
-            )}
-          </FieldForm>
+                  <Radio
+                    id="bottom"
+                    value="하의"
+                    name="category"
+                    onChange={handleCategories}
+                    checked={"하의" === category ? true : false}
+                  />
+                  <Radio
+                    id="dress"
+                    value="원피스"
+                    name="category"
+                    onChange={handleCategories}
+                    checked={"원피스" === category ? true : false}
+                  />
+                  <Radio
+                    id="shoes"
+                    value="신발"
+                    name="category"
+                    onChange={handleCategories}
+                    checked={"신발" === category ? true : false}
+                  />
+                  <Radio
+                    id="bag"
+                    value="가방"
+                    name="category"
+                    onChange={handleCategories}
+                    checked={"가방" === category ? true : false}
+                  />
+                </FormGroup>
 
-          {!imageFile && !!product && (
-            <div className="w-2/6 flex-none ">
-              <img src={image} alt="상품 이미지" className="w-full h-auto" />
-            </div>
-          )}
-          {imageFile && (
-            <div className="w-2/6 flex-none ">
-              <img src={URL.createObjectURL(imageFile)} alt="상품 이미지" className="w-full h-auto" />
-            </div>
-          )}
-        </div>
+                {!noOptionCategotys.some((noOption) => noOption == category) && (
+                  <FormGroup direction="row" label="옵션">
+                    {optionListSet(productInfo.category).map((sizeOpt, idx) => (
+                      <CheckBox
+                        key={`sizeOpt-${idx}`}
+                        id={sizeOpt.opt}
+                        value={sizeOpt.opt}
+                        name="option"
+                        onChange={handleOptions}
+                        checked={options.some((option) => option.opt === sizeOpt.opt)}
+                      />
+                    ))}
+                  </FormGroup>
+                )}
+              </FieldForm>
 
-        <ContentBottomA>
-          <Button title="목록으로 돌아가기" variant="outline" size="large" href="/product-management" />
-          <Button
-            title={isUploading ? "상품 수정 중 ...." : "상품 수정"}
-            variant="contain"
-            size="full"
-            onClick={updateProduct}
-          />
-        </ContentBottomA>
+              {!imageFile && !!oldProduct && (
+                <div className="w-2/6 flex-none ">
+                  <img src={image} alt="상품 이미지" className="w-full h-auto" />
+                </div>
+              )}
+              {imageFile && (
+                <div className="w-2/6 flex-none ">
+                  <img src={URL.createObjectURL(imageFile)} alt="상품 이미지" className="w-full h-auto" />
+                </div>
+              )}
+            </div>
+
+            <ContentBottomA>
+              <Button title="목록으로 돌아가기" variant="outline" size="large" href="/product-management" />
+              <Button
+                title={isUploading ? "상품 수정 중 ...." : "상품 수정"}
+                variant="contain"
+                size="full"
+                onClick={updateProduct}
+              />
+            </ContentBottomA>
+          </>
+        )}
       </ContentBlockA>
     </ContentLayoutA>
   );

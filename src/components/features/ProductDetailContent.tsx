@@ -6,6 +6,7 @@ import useProducts from "@/hooks/useProducts";
 import useCarts from "@/hooks/useCarts";
 import { optionList as optionListSet } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
+import MessageContent from "@/components/features/MessageContent";
 import FormGroup from "@/components/ui/FormGroup";
 import Radio from "@/components/ui/Radio";
 import Button from "@/components/ui/Button";
@@ -17,7 +18,7 @@ const ProductDetailContent = () => {
   const { addCartProduct: addCartProductItem } = useCarts();
 
   const {
-    getProduct: { data: product }
+    getProduct: { isError, data: product }
   } = useProducts();
 
   const [cartProductInfo, setCartProductInfo] = useState<CartProductDomain>({
@@ -67,8 +68,11 @@ const ProductDetailContent = () => {
       }
     );
   };
+
   return (
     <>
+      {isError && <MessageContent type="error" />}
+
       {product && (
         <ContentLayoutA>
           <div className="flex flex-row gap-10">
