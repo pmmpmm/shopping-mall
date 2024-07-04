@@ -1,9 +1,7 @@
+import NotFoundContent from "@/components/features/NotFoundContent";
+
 const NotFound = () => {
-  return (
-    <div>
-      <p>NotFound</p>
-    </div>
-  );
+  return <NotFoundContent />;
 };
 
 export default NotFound;

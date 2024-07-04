@@ -6,12 +6,13 @@ import ContentBlockA from "@/components/ui/ContentBlockA";
 import ProductManagementList from "@/components/ui/ProductManagementList";
 import Button from "@/components/ui/Button";
 import NoContent from "@/components/ui/NoContent";
+import MessageContent from "./MessageContent";
 
 const ProductManagementContent = () => {
   const { deleteProduct } = useProducts();
 
   const {
-    getAllProducts: { data: products }
+    getAllProducts: { isLoading, isError, data: products }
   } = useProducts();
 
   const handleDeleteProduct = (id: string) => {
@@ -29,17 +30,27 @@ const ProductManagementContent = () => {
 
         <CategoryNav path="/product-management?category" />
 
-        <div className="mt-8">
-          {products && products.length > 0 ? (
-            <ul className="flex flex-col">
-              {products.map((item, idx) => (
-                <ProductManagementList key={`item-${idx}`} item={item} onClick={() => handleDeleteProduct(item.id)} />
-              ))}
-            </ul>
-          ) : (
-            <NoContent message="등록된 상품이 없습니다." />
-          )}
-        </div>
+        {isLoading && <MessageContent type="loading" />}
+        {isError && <MessageContent type="error" />}
+
+        {products && (
+          <>
+            <div className="mt-8">
+              {products && products.length > 0 && (
+                <ul className="flex flex-col">
+                  {products.map((item, idx) => (
+                    <ProductManagementList
+                      key={`item-${idx}`}
+                      item={item}
+                      onClick={() => handleDeleteProduct(item.id)}
+                    />
+                  ))}
+                </ul>
+              )}
+            </div>
+          </>
+        )}
+        {products && products.length <= 0 && <NoContent message="등록된 상품이 없습니다." />}
       </ContentBlockA>
     </ContentLayoutA>
   );

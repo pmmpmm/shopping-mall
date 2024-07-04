@@ -10,7 +10,9 @@ const useCarts = () => {
   const getAllCartProduct = useQuery({
     queryKey: ["all-cartProducts", userId],
     queryFn: CartService.getAllCartProduct,
-    enabled: !!userId
+    select: (response) => {
+      if (response) return response;
+    }
   });
 
   const addCartProduct = useMutation({

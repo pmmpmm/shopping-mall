@@ -1,7 +1,7 @@
 import { CartProductDomain } from "@/domain/CartDomain";
+import useCarts from "@/hooks/useCarts";
 import ProductThumbList from "@/components/ui/ProductThumbList";
 import Button from "@/components/ui/Button";
-import useCarts from "@/hooks/useCarts";
 
 const CartList = ({ item }: { item: CartProductDomain }) => {
   const { id, options, quantity } = item;
@@ -27,7 +27,7 @@ const CartList = ({ item }: { item: CartProductDomain }) => {
   };
 
   return (
-    <li className="flex flex-row justify-end items-center py-4 gap-4 border-b border-gray-200 border-solid last:border-0 last:pb-0">
+    <>
       <ProductThumbList url={`/productpage?id=${id}`} product={item} />
 
       <div className="flex flex-row gap-6 items-center">
@@ -41,7 +41,7 @@ const CartList = ({ item }: { item: CartProductDomain }) => {
 
         <Button title="삭제" variant="outline" size="small" onClick={handleDelete} />
       </div>
-    </li>
+    </>
   );
 };
 

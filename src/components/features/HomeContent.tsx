@@ -1,10 +1,12 @@
 import useProducts from "@/hooks/useProducts";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
+import MessageContent from "@/components/features/MessageContent";
 import ProductCard from "@/components/ui/ProductCard";
+import NoContent from "@/components/ui/NoContent";
 
 const HomeContent = () => {
   const {
-    getAllProducts: { data: products }
+    getAllProducts: { isLoading, isError, data: products }
   } = useProducts();
 
   return (
@@ -23,14 +25,22 @@ const HomeContent = () => {
         </div>
       </div>
       <ContentLayoutA>
-        <ul className="grid grid-cols-4 gap-x-2 gap-y-14">
-          {products?.map((product, idx) => (
-            <li key={`product-${idx}`}>
-              <ProductCard id={product.id} image={product.image} title={product.title} price={product.price} />
-            </li>
-          ))}
-          <li></li>
-        </ul>
+        {isLoading && <MessageContent type="loading" height="h-[640px]" />}
+        {isError && <MessageContent type="error" height="h-[640px]" />}
+
+        {products && (
+          <ul className="grid grid-cols-4 gap-x-2 gap-y-14">
+            {products?.map((product, idx) => (
+              <li key={`product-${idx}`}>
+                <ProductCard id={product.id} image={product.image} title={product.title} price={product.price} />
+              </li>
+            ))}
+          </ul>
+        )}
+
+        {products && products.length <= 0 && (
+          <NoContent message="아직 상품이 준비되지 않았습니다. 빠른 시일 내에 준비하겠습니다." />
+        )}
       </ContentLayoutA>
     </>
   );
