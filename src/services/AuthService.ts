@@ -7,10 +7,11 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential
 } from "firebase/auth";
-import { ref, remove, set } from "firebase/database";
+import { child, get, ref, remove, set } from "firebase/database";
 import { auth, firebaseDb } from "@/services/FirebaseClient";
 import queryClient from "@/services/QueryClient";
 import UserService from "@/services/UserService";
+import { UserDomain } from "@/domain/UserDomain";
 
 const catchErrorCode = (errorCode: string, defaultMessage: string) => {
   switch (errorCode) {
@@ -48,7 +49,7 @@ const signup = async (name: string, email: string, password: string) => {
       return user;
     })
     .catch((error) => {
-      catchErrorCode(error.code, "회원가입에 실패 하였습니다.");
+      return catchErrorCode(error.code, "회원가입에 실패 하였습니다.");
     });
 };
 
@@ -61,7 +62,7 @@ const login = async (email: string, password: string) => {
       return userCredential.user;
     })
     .catch((error) => {
-      catchErrorCode(error.code, "로그인에 실패 하였습니다.");
+      return catchErrorCode(error.code, "로그인에 실패 하였습니다.");
     });
 };
 
@@ -122,4 +123,16 @@ const deleteAccount = async (currentPassword: string) => {
   }
 };
 
-export default { signup, login, logout, deleteAccount, changePassword };
+const dbRef = ref(firebaseDb);
+const getAllUsers = async () => {
+  return get(child(dbRef, `users`)) //
+    .then((snapshot) => {
+      if (snapshot.exists()) {
+        return Object.values(snapshot.val()) as UserDomain[];
+      } else {
+        console.log("No data available");
+      }
+    });
+};
+
+export default { signup, login, logout, deleteAccount, changePassword, getAllUsers };
