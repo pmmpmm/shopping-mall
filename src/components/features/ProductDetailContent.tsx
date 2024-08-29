@@ -99,7 +99,7 @@ const ProductDetailContent = () => {
             <div className="basis-[46%] flex-initial">
               <div className="mb-7">
                 <h3 className="text-black text-3xl font-medium">{product.title}</h3>
-                <p className="mt-1 text-lg font-light">₩ {product.price}</p>
+                <p className="mt-1 text-lg font-light">₩ {product.price} </p>
                 <p className="mt-4 text-base whitespace-pre break-keep text-pretty">{product.description}</p>
               </div>
 
