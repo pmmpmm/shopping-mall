@@ -100,14 +100,14 @@ const ProductDetailContent = () => {
               <div className="mb-7">
                 <h3 className="text-black text-3xl font-medium">{product.title}</h3>
                 <p className="mt-1 text-lg font-light">₩ {product.price}</p>
-                <p className="mt-4 text-base">{product.description}</p>
+                <p className="mt-4 text-base whitespace-pre">{product.description}</p>
               </div>
 
               {product.options && (
                 <>
                   <hr className="border-gray-200" />
-                  <div className="flex flex-row items-center gap-4 mt-5">
-                    <p className="leading-none">사이즈</p>
+                  <div className="flex flex-row items-start gap-4 mt-5">
+                    <p className="flex-none py-1 leading-7">사이즈</p>
                     <FormGroup direction="row">
                       {product.options.map((option, idx) => (
                         <Radio
