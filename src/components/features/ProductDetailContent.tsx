@@ -4,6 +4,7 @@ import { ProductOption } from "@/domain/ProductDomain";
 import { CartProductDomain } from "@/domain/CartDomain";
 import useProducts from "@/hooks/useProducts";
 import useCarts from "@/hooks/useCarts";
+import { UseLoginContext } from "@/context/LoginContext";
 import { optionList as optionListSet } from "@/common/productOption";
 import ContentLayoutA from "@/components/layouts/ContentLayoutA";
 import MessageContent from "@/components/features/MessageContent";
@@ -16,6 +17,7 @@ const ProductDetailContent = () => {
   const { search } = useLocation();
   const id = new URLSearchParams(search).get("id") as string;
   const { addCartProduct: addCartProductItem } = useCarts();
+  const { isLogin } = UseLoginContext();
 
   const {
     getProduct: { isError, data: product }
@@ -56,6 +58,14 @@ const ProductDetailContent = () => {
       alert("상품의 옵션을 선택해 주세요.");
       return;
     }
+    if (!isLogin) {
+      const goToLoginPage = confirm("로그인 페이지로 이동할까요?");
+      if (goToLoginPage) {
+        navigate("/login");
+      } else {
+        return;
+      }
+    }
 
     addCartProductItem.mutate(
       { cartProduct: cartProductInfo },
@@ -63,7 +73,11 @@ const ProductDetailContent = () => {
         onSuccess: (data) => {
           if (data === null) return;
           const goToCartPage = confirm("장바구니에 상품이 저장되었습니다. \n장바구니 페이지로 이동하시겠습니까?");
-          if (goToCartPage) navigate("/cart");
+          if (goToCartPage) {
+            navigate("/cart");
+          } else {
+            return;
+          }
         }
       }
     );
