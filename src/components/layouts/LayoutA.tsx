@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import WrapperLayoutA from "@/components/layouts/WrapperLayoutA";
 import Header from "@/components/features/Header";
 import CategoryNav from "@/components/features/CategoryNav";
@@ -5,9 +6,10 @@ import CategoryNav from "@/components/features/CategoryNav";
 interface LayoutAProps {
   children: React.ReactNode;
 }
-//추후 삭제
-//<WrapperLayoutA className="border-b border-solid border-gray-200">
 const LayoutA = ({ children }: LayoutAProps) => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className="pb-12">
       <WrapperLayoutA className="pb-5">
