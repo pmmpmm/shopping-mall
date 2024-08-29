@@ -90,17 +90,17 @@ const ProductDetailContent = () => {
       {product && (
         <ContentLayoutA>
           <div className="flex flex-row gap-10">
-            <div className="basis-[54%]">
+            <div className="basis-[54%] flex-initial">
               <div className="w-full ">
                 <img src={product.image} alt="상품 이미지" className="w-full" />
               </div>
             </div>
 
-            <div className="basis-[46%]">
+            <div className="basis-[46%] flex-initial">
               <div className="mb-7">
                 <h3 className="text-black text-3xl font-medium">{product.title}</h3>
                 <p className="mt-1 text-lg font-light">₩ {product.price}</p>
-                <p className="mt-4 text-base whitespace-pre">{product.description}</p>
+                <p className="mt-4 text-base whitespace-pre break-keep text-pretty">{product.description}</p>
               </div>
 
               {product.options && (
