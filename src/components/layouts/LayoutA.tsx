@@ -9,7 +9,7 @@ interface LayoutAProps {
 //<WrapperLayoutA className="border-b border-solid border-gray-200">
 const LayoutA = ({ children }: LayoutAProps) => {
   return (
-    <>
+    <div className="pb-12">
       <WrapperLayoutA className="pb-5">
         <Header />
       </WrapperLayoutA>
@@ -19,7 +19,7 @@ const LayoutA = ({ children }: LayoutAProps) => {
       </WrapperLayoutA>
 
       <WrapperLayoutA>{children}</WrapperLayoutA>
-    </>
+    </div>
   );
 };
 
